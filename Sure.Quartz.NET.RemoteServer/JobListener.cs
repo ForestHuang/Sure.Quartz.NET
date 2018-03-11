@@ -10,12 +10,13 @@
     /// </summary>
     public class JobListener : IJobListener
     {
+
+        private Dictionary<string, Stopwatch> stopwatches = new Dictionary<string, Stopwatch>();
+
         public string Name
         {
             get { return "JobListener"; }
         }
-
-        private Dictionary<string, Stopwatch> stopwatches = new Dictionary<string, Stopwatch>();
 
         //Scheduler在JobDetail将要被执行时调用这个方法。
         public void JobExecutionVetoed(IJobExecutionContext context)

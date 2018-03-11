@@ -39,6 +39,7 @@ namespace Sure.Quartz.NET.RemoteServer
 
             var schedulerFactory = new StdSchedulerFactory(properties);
             var scheduler = schedulerFactory.GetScheduler();
+            //加入JobListener，监听
             scheduler.ListenerManager.AddJobListener(new JobListener(), GroupMatcher<JobKey>.AnyGroup());
             scheduler.Start();
         }
