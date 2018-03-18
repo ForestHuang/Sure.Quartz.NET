@@ -55,7 +55,7 @@ namespace Sure.Quartz.NET.Model
             {
                 if (StartTime.Value == null)
                 {
-                    StartTime = DateTimeOffset.UtcNow;
+                    StartTime = new DateTimeOffset(Convert.ToDateTime(DateTimeOffset.UtcNow.ToLocalTime().ToString("yyyy-MM-dd hh:mm:ss")));
                 }
             }
             get { return StartTime; }

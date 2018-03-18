@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quartz", "Quartz\Quartz.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sure.Quartz.NET.Model", "Sure.Quartz.NET.Model\Sure.Quartz.NET.Model.csproj", "{60525023-4395-46AC-B949-3FDBDB947126}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sure.Quartz.NET.Repository", "Sure.Quartz.NET.Repository\Sure.Quartz.NET.Repository.csproj", "{5E69EC64-40BB-42E0-9C90-68D56A420616}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sure.Quartz.NET.IRepository", "Sure.Quartz.NET.IRepository\Sure.Quartz.NET.IRepository.csproj", "{D5C339BA-64E8-41BD-B45B-02317F5E1AF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{60525023-4395-46AC-B949-3FDBDB947126}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60525023-4395-46AC-B949-3FDBDB947126}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60525023-4395-46AC-B949-3FDBDB947126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E69EC64-40BB-42E0-9C90-68D56A420616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E69EC64-40BB-42E0-9C90-68D56A420616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E69EC64-40BB-42E0-9C90-68D56A420616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E69EC64-40BB-42E0-9C90-68D56A420616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5C339BA-64E8-41BD-B45B-02317F5E1AF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5C339BA-64E8-41BD-B45B-02317F5E1AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5C339BA-64E8-41BD-B45B-02317F5E1AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5C339BA-64E8-41BD-B45B-02317F5E1AF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
