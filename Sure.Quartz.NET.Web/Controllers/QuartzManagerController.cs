@@ -1,9 +1,5 @@
 ﻿namespace Sure.Quartz.NET.Web.Controllers
 {
-    /*
-     * Quartz.NET Study
-     *
-    */
     using global::Quartz;
     using global::Quartz.Impl;
     using global::Quartz.Impl.Matchers;
@@ -37,8 +33,7 @@
                     var properties = new NameValueCollection();
                     properties["quartz.scheduler.proxy"] = "true";
                     properties["quartz.scheduler.proxy.Address"] = $"{channelType}://{localIp}:{port}/{bindName}";
-                    var schedulerFactory = new StdSchedulerFactory(properties);
-                    scheduler = schedulerFactory.GetScheduler();
+                    scheduler = (new StdSchedulerFactory(properties)).GetScheduler();
                     scheduler.Start();
                 }
             }
@@ -237,8 +232,5 @@
         }
         #endregion
 
-        #region private
-
-        #endregion
     }
 }
