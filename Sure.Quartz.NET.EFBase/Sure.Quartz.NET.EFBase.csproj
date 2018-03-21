@@ -30,8 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,7 +48,86 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBJobManager.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBJobManager.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBJobManager.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBJobManager.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBJobManager.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QRTZ_BLOB_TRIGGERS.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QRTZ_CALENDARS.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QRTZ_CRON_TRIGGERS.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QRTZ_FIRED_TRIGGERS.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QRTZ_JOB_DETAILS.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QRTZ_LOCKS.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QRTZ_PAUSED_TRIGGER_GRPS.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QRTZ_SCHEDULER_STATE.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QRTZ_SIMPLE_TRIGGERS.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QRTZ_SIMPROP_TRIGGERS.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QRTZ_TRIGGERS.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SURE_QRTZ_JOBINFO.cs">
+      <DependentUpon>DBJobManager.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="DBJobManager.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DBJobManager.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="DBJobManager.edmx.diagram">
+      <DependentUpon>DBJobManager.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DBJobManager.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBJobManager.edmx</DependentUpon>
+      <LastGenOutput>DBJobManager.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DBJobManager.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBJobManager.edmx</DependentUpon>
+      <LastGenOutput>DBJobManager.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

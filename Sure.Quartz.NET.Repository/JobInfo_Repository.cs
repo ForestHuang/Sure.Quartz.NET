@@ -1,8 +1,10 @@
-﻿using Dapper;
-using Sure.Quartz.NET.Model;
+﻿using Sure.Quartz.NET.EFBase;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Sure.Quartz.NET.Repository
 {
@@ -19,21 +21,14 @@ namespace Sure.Quartz.NET.Repository
         /// <param name="id">标识</param>
         /// <param name="state">任务状态</param>
         /// <returns>数据</returns>
-        public IEnumerable<SURE_QRTZ_JOBINFO> LoadJobInfos(int? id = null, int? state = null)
+        public Tuple<IQueryable<SURE_QRTZ_JOBINFO>, int> LoadJobInfoes<K>(Expression<Func<SURE_QRTZ_JOBINFO, bool>> whereLambda,
+            Expression<Func<SURE_QRTZ_JOBINFO, K>> orderByLambda, bool isAsc, int pageIndex, int pageSize)
         {
-            var whereSql = string.Empty;
-            if (id != null)
-                whereSql = $" WHERE Id = {id}";
-            if (state != null)
-                whereSql = $" WHERE State = {state}";
+            var jobInfoModelQueryable = _dbContext.customer_quartzjobinfo.Where(whereLambda);
+            int totalCount = jobInfoModelQueryable.Count();
+            return new Tuple<IQueryable<SURE_QRTZ_JOBINFO>, int>(isAsc ? jobInfoModelQueryable.OrderBy(orderByLambda).Skip(pageIndex - 1).Take(pageSize) : jobInfoModelQueryable.OrderByDescending(orderByLambda).Skip((pageIndex - 1) * pageSize).Take(pageSize), totalCount);
 
-            string sql = $"SELECT * FROM [dbo].[SURE_QRTZ_JOBINFO] {whereSql}";
-            using (IDbConnection dbConnection = new SqlConnection(connectionString))
-            {
-                return dbConnection.Query<SURE_QRTZ_JOBINFO>(sql);
-            }
         }
-
 
     }
 }
