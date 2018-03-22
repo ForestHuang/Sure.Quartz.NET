@@ -43,6 +43,12 @@
     <Compile Include="JobInfo_IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sure.Quartz.NET.EFBase\Sure.Quartz.NET.EFBase.csproj">
+      <Project>{f617121a-7624-4004-86c9-bce8b2f5db58}</Project>
+      <Name>Sure.Quartz.NET.EFBase</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

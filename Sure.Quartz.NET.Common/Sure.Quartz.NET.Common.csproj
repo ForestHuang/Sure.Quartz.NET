@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5E69EC64-40BB-42E0-9C90-68D56A420616}</ProjectGuid>
+    <ProjectGuid>{4FF4132D-A00C-4C53-8AEE-B3465D432E42}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sure.Quartz.NET.Repository</RootNamespace>
-    <AssemblyName>Sure.Quartz.NET.Repository</AssemblyName>
+    <RootNamespace>Sure.Quartz.NET.Common</RootNamespace>
+    <AssemblyName>Sure.Quartz.NET.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,12 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\Sure.Quartz.NET.EFBase\bin\Debug\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,22 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JobInfo_Repository.cs" />
+    <Compile Include="Enum\JobState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sure.Quartz.NET.Common\Sure.Quartz.NET.Common.csproj">
-      <Project>{4ff4132d-a00c-4c53-8aee-b3465d432e42}</Project>
-      <Name>Sure.Quartz.NET.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sure.Quartz.NET.EFBase\Sure.Quartz.NET.EFBase.csproj">
-      <Project>{f617121a-7624-4004-86c9-bce8b2f5db58}</Project>
-      <Name>Sure.Quartz.NET.EFBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sure.Quartz.NET.IRepository\Sure.Quartz.NET.IRepository.csproj">
-      <Project>{d5c339ba-64e8-41bd-b45b-02317f5e1af8}</Project>
-      <Name>Sure.Quartz.NET.IRepository</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

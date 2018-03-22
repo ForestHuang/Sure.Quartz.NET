@@ -1,14 +1,20 @@
-﻿using Sure.Quartz.NET.EFBase;
+﻿using Sure.Quartz.NET.Common;
+using Sure.Quartz.NET.EFBase;
+using Sure.Quartz.NET.IRepository;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
+using System.ComponentModel.Composition;
 
 namespace Sure.Quartz.NET.Repository
 {
-    public class JobInfo_Repository
+    [Export("JobInfo_Repository", typeof(JobInfo_IRepository))]
+
+    /// <summary>
+    /// Job CURD
+    /// </summary>
+    public class JobInfo_Repository : JobInfo_IRepository
     {
         /// <summary>
         /// 数据库连接字符串
@@ -40,7 +46,7 @@ namespace Sure.Quartz.NET.Repository
         {
             try
             {
-                var jobInfoModelQueryable = new JobEntities().SURE_QRTZ_JOBINFO.Where(whereLambda);
+                var jobInfoModelQueryable = dbContext.SURE_QRTZ_JOBINFO.Where(whereLambda);
                 int totalCount = jobInfoModelQueryable.Count();
                 return new Tuple<IQueryable<SURE_QRTZ_JOBINFO>, int>(isAsc
                     ? jobInfoModelQueryable.OrderBy(orderByLambda).Skip(pageIndex - 1).Take(pageSize)
@@ -61,7 +67,7 @@ namespace Sure.Quartz.NET.Repository
         {
             try
             {
-                return new JobEntities().SURE_QRTZ_JOBINFO.SingleOrDefault<SURE_QRTZ_JOBINFO>(whereLambda);
+                return dbContext.SURE_QRTZ_JOBINFO.SingleOrDefault<SURE_QRTZ_JOBINFO>(whereLambda);
             }
             catch (Exception ex)
             {
@@ -78,7 +84,7 @@ namespace Sure.Quartz.NET.Repository
         {
             try
             {
-                new JobEntities().SaveChanges();
+                dbContext.SaveChanges();
                 return jobInfoModel.Id;
             }
             catch (Exception ex)
@@ -87,17 +93,58 @@ namespace Sure.Quartz.NET.Repository
             }
         }
 
+        /// <summary>
+        /// 添加数据
+        /// </summary>
+        /// <param name="jobInfoModel">数据信息</param>
+        /// <returns>ID</returns>
         public int Add(SURE_QRTZ_JOBINFO jobInfoModel)
         {
-            jobInfoModel = dbContext.SURE_QRTZ_JOBINFO.Add(new SURE_QRTZ_JOBINFO()
+            try
             {
-                Cron = jobInfoModel.Cron,
-                Deleted = jobInfoModel.Deleted,
-                Description = jobInfoModel.Description,
-                StartTime = jobInfoModel.StartTime == null ? DateTimeOffset.UtcNow.LocalDateTime : jobInfoModel.StartTime,
-            });
-            return jobInfoModel.Id;
+                var jobInfo = dbContext.SURE_QRTZ_JOBINFO.Add(new SURE_QRTZ_JOBINFO()
+                {
+                    JobName = jobInfoModel.JobName,
+                    JobGroupName = jobInfoModel.JobGroupName,
+                    TriggerName = jobInfoModel.TriggerName,
+                    TriggerGroupName = jobInfoModel.TriggerGroupName,
+                    Cron = jobInfoModel.Cron,
+                    Deleted = false,
+                    Description = jobInfoModel.Description,
+                    State = (int)JobState.PAUSED,
+                    PreTime = null,
+                    NextTime = null,
+                    DLLName = $"{jobInfoModel.DLLName}.dll",
+                    FullJobName = jobInfoModel.FullJobName,
+                    RequestUrl = jobInfoModel.RequestUrl,
+                    StartTime = jobInfoModel.StartTime == null ? DateTimeOffset.UtcNow.LocalDateTime : jobInfoModel.StartTime,
+                    EndTime = jobInfoModel.EndTime
+                });
+                dbContext.SaveChanges();
+                return jobInfo.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"新增失败,Message:{ex.Message}");
+            }
         }
 
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="Id">数据ID</param>
+        /// <returns>ID</returns>
+        public int Delete(int Id)
+        {
+            try
+            {
+                var jobInfo = dbContext.SURE_QRTZ_JOBINFO.FirstOrDefault(m => m.Id == Id);
+                return dbContext.SURE_QRTZ_JOBINFO.Remove(jobInfo).Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"删除失败,Message:{ex.Message}");
+            }
+        }
     }
 }
