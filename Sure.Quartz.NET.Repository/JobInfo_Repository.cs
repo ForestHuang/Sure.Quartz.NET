@@ -17,6 +17,9 @@ namespace Sure.Quartz.NET.Repository
 
         private static JobEntities dbContext = null;
 
+        /// <summary>
+        /// 无参构造
+        /// </summary>
         public JobInfo_Repository()
         {
             dbContext = new JobEntities();
@@ -92,9 +95,9 @@ namespace Sure.Quartz.NET.Repository
                 Deleted = jobInfoModel.Deleted,
                 Description = jobInfoModel.Description,
                 StartTime = jobInfoModel.StartTime == null ? DateTimeOffset.UtcNow.LocalDateTime : jobInfoModel.StartTime,
-        });
+            });
             return jobInfoModel.Id;
         }
 
-}
+    }
 }
