@@ -36,6 +36,9 @@
                                     <li class="active active-jobData" data-jobStatus="-1" v-on:click="loadGetJob()">
                                         <a data-toggle="tab" href="#tab-QuartzData">任务调度管理</a>
                                     </li>
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#tab-Quartz-Persistence">持久化任务调度管理</a>
+                                    </li>
                                 </ul>
                                 <div class="tab-content">
                                     <div id="tab-QuartzData" class="tab-pane active">
@@ -84,6 +87,14 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-content">
+                                    <!-- Job 持久化，集群 -->
+                                    <div id="tab-Quartz-Persistence" class="tab-pane active">
+                                        <div class="full-height-scroll">
+                                            1
                                         </div>
                                     </div>
                                 </div>

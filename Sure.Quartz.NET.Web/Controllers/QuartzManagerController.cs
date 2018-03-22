@@ -42,10 +42,12 @@
         //首页，任务展示
         public ActionResult QuartzHome() { return View(); }
 
+        #region CURD Job
+
         //Upload DLL
         public ActionResult Upload()
         {
-            var uploadPath = Request.MapPath("~/bin/JobDll");
+            var uploadPath = Request.MapPath("~/bin");
             var file = Request.Files["Filedata"];
             try
             {
@@ -61,8 +63,6 @@
                 return Json(new AjaxResponseData { StausCode = "fail", Message = "上传失败", Data = null });
             }
         }
-
-        #region CURD Job
 
         //Load Job
         public JsonResult LoadJobInfoData()
@@ -136,7 +136,7 @@
                     return Json(new AjaxResponseData { StausCode = "fail", Message = "已存在相同的任务名称", Data = null });
 
                 var assemblyName = fullJobName.Split('.')[0];
-                var dllpath = Request.MapPath(string.Format("~/bin/JobDll/{0}.dll", assemblyName));
+                var dllpath = Request.MapPath(string.Format("~/bin/{0}.dll", assemblyName));
 
                 if (!System.IO.File.Exists(dllpath))
                     return Json(new AjaxResponseData { StausCode = "fail", Message = "没有找到执行类名所对应的文件，请先上传", Data = null });
@@ -230,7 +230,7 @@
                 return Json(new AjaxResponseData { StausCode = "fail", Message = "修改失败", Data = null });
             }
         }
-        #endregion
 
+        #endregion
     }
 }
