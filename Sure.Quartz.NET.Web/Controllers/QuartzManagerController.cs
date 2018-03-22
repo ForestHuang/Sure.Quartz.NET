@@ -39,8 +39,14 @@
             }
         }
 
-        //首页，任务展示
+        //默认页
+        public ActionResult Default() { return View(); }
+
+        //首页，任务展示 Job
         public ActionResult QuartzHome() { return View(); }
+
+        //首页，任务展示 Job持久化
+        public ActionResult QuartzDurableHome() { return View(); }
 
         #region CURD Job
 

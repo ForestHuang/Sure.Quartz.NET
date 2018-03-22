@@ -7,8 +7,9 @@
     });
 
     //Vue.js MVVM
+    //job-notdurable
     var vm = new Vue({
-        el: '#Quartz-Job',
+        el: '#job-notdurable',
         data: {
             jobs: [],
             jobModel: null,
@@ -99,6 +100,98 @@
         }
     });
 
+    //job-durable
+    var vm = new Vue({
+        el: '#job-durable',
+        data: {
+            jobs: [],
+            jobModel: null,
+            QuartzJobModel: {
+                jobName: '',
+                jobGroupName: '',
+                fullJobName: '',
+                jobDescription: '',
+                triggerName: '',
+                triggerGroupName: '',
+                cron: '',
+                editcron: '',
+                triggerDescription: ''
+            }
+        }, mounted: function () {
+            getJobInfoList.bind(this)(1, 10);
+        }, methods: {
+            loadGetJob: function () {
+                getJobInfoList.bind(this)(1, 10);
+            }
+            , addJob: function (event) {
+                var formData = new FormData($('#job-form')[0]);
+                $.ajax({
+                    url: '/QuartzManager/AddJob', type: 'POST', data: formData, contentType: false, processData: false,
+                    success: function (data) {
+                        $('#modal-form').modal('hide');
+                        toastr.success(data.Message);
+                        $('#nav-jobStatus li[data-jobStatus=-1]').click();
+                    }
+                })
+            }
+            , pauseJob: function (jobInfo) {
+                $.post('/QuartzManager/PauseJob',
+                    {
+                        jobName: jobInfo.JobName,
+                        jobGroupName: jobInfo.JobGroupName,
+                        triggerName: jobInfo.TriggerName,
+                        triggerGroupName: jobInfo.TriggerGroupName
+                    }, function (data) {
+                        if (data.StausCode == 'success') {
+                            toastr.success("暂停成功");
+                            $('#nav-jobStatus li[data-jobStatus=-1]').click();
+                        } else { toastr.error("暂停失败"); }
+                    });
+            }
+            , resumeJob: function (jobInfo) {
+                $.post('/QuartzManager/ResumeJob',
+                    {
+                        jobName: jobInfo.JobName,
+                        jobGroupName: jobInfo.JobGroupName,
+                        triggerName: jobInfo.TriggerName,
+                        triggerGroupName: jobInfo.TriggerGroupName
+                    }, function (data) {
+                        if (data.StausCode == 'success') {
+                            toastr.success("恢复成功");
+                        } else { toastr.error("恢复失败"); }
+                    });
+            }
+            , deleteJob: function (jobInfo) {
+                $.post('/QuartzManager/DeleteJob',
+                    {
+                        jobName: jobInfo.JobName,
+                        jobGroupName: jobInfo.JobGroupName,
+                        triggerName: jobInfo.TriggerName,
+                        triggerGroupName: jobInfo.TriggerGroupName
+                    }, function (data) {
+                        if (data.StausCode == 'success') {
+                            toastr.success("删除成功");
+                            $('#nav-jobStatus li[data-jobStatus=-1]').click();
+                        } else { toastr.error("删除失败"); }
+                    });
+            }
+            , editJob: function (jobInfo) {
+                var formData = new FormData($('#job-editform')[0]);
+                $.post('/QuartzManager/EditJob',
+                    {
+                        triggerName: jobInfo.TriggerName,
+                        triggerGroupName: jobInfo.TriggerGroupName,
+                        triggerCron: formData.get('jobEditCron')
+                    }, function (data) {
+                        if (data.StausCode == 'success') {
+                            $('#modal-form').modal('hide');
+                            toastr.success("修改成功");
+                            $('#nav-jobStatus li[data-jobStatus=-1]').click();
+                        } else { $('#modal-form').modal('hide'); toastr.error("修改失败"); }
+                    });
+            }
+        }
+    });
     //Get JobList
     function getJobInfoList(pageIndex, pageSize) {
         var _self = this;

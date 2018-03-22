@@ -193,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Css\animate.min.css" />
+    <Content Include="Content\Css\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\Css\bootstrap.css" />
     <Content Include="Content\Css\bootstrap.min.css" />
     <Content Include="Content\Css\dataTables.bootstrap.css" />
@@ -205,6 +206,8 @@
     <Content Include="Content\images\sort_asc.png" />
     <Content Include="Content\images\sort_desc.png" />
     <Content Include="Content\images\upload.jpg" />
+    <Content Include="Content\Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Content\Scripts\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Content\Scripts\content.min.js" />
     <Content Include="Content\Scripts\dataTables.bootstrap.min.js" />
     <Content Include="Content\Scripts\jquery.dataTables.min.js" />
@@ -252,6 +255,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\QuartzManager\QuartzHome.cshtml" />
     <Content Include="Content\WebScripts\webScripts.QuartzManager.js" />
+    <Content Include="Views\QuartzManager\QuartzDurableHome.cshtml" />
+    <Content Include="Views\QuartzManager\Default.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

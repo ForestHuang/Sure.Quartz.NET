@@ -42,7 +42,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\浦发银行\2017-11-1 浦发携程中兴东航接口\2017-12-21 BTravelSettlement\BTravelSettlement\BTravelSettlement\bin\log4net.dll</HintPath>
+      <HintPath>..\..\..\浦发银行\2017-6-12 浦发差旅借口\20171221-BTravelSettlement\BTravelSettlement\BTravelSettlement\bin\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
