@@ -20,8 +20,7 @@ namespace Sure.Quartz.NET.IRepository
         /// <param name="pageIndex">当前页</param>
         /// <param name="pageSize">每页显示数</param>
         /// <returns>数据信息</returns>
-        Tuple<IQueryable<SURE_QRTZ_JOBINFO>, int> Load<T>(Expression<Func<SURE_QRTZ_JOBINFO, bool>> whereLambda,
-          Expression<Func<SURE_QRTZ_JOBINFO, T>> orderByLambda, bool isAsc, int pageIndex = 1, int pageSize = 10);
+        Tuple<IQueryable<SURE_QRTZ_JOBINFO>, int> Load<T>(Expression<Func<SURE_QRTZ_JOBINFO, T>> orderByLambda, bool isAsc, Expression<Func<SURE_QRTZ_JOBINFO, bool>> whereLambda = null, int pageIndex = 1, int pageSize = 10);
 
         /// <summary>
         /// 加载数据信息，单条数据

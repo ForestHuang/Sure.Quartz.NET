@@ -8,11 +8,15 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>QuartzHome - Job</title>
-    <!-- Css -->
+    <!-- bootstrap.min.css -->
     <link type="text/css" href="~/Content/Css/bootstrap.min.css" rel="stylesheet" />
+    <!-- style.min.css -->
     <link type="text/css" href="~/Content/Css/style.min.css" rel="stylesheet" />
+    <!-- font-awesome.min.css -->
     <link type="text/css" href="~/Content/Css/font-awesome.min.css" rel="stylesheet" />
+    <!-- uploadify.css -->
     <link type="text/css" href="~/Content/Css/uploadify.css" rel="stylesheet" />
+    <!-- toastr.min.css -->
     <link type="text/css" href="~/Content/Css/toastr.min.css" rel="stylesheet" />
     <style type="text/css">
         .btn-title {
@@ -23,6 +27,7 @@
 <body class="gray-bg">
     <div id="job-notdurable">
         <div class="full-height-scroll">
+
             <!-- 顶部两个按钮 -->
             <div class="but-div">
                 <a data-toggle="modal" href="#modal-form" class="btn btn-white btn-bitbucket btn-title" title="新建">
@@ -36,7 +41,7 @@
                 </div>
             </div>
 
-            <!-- Table 表格 -->
+            <!-- Table 表格，列表 -->
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -71,7 +76,6 @@
                 </tbody>
             </table>
         </div>
-
 
         <!-- Quartz.NET表单，弹出窗口 -->
         <div id="modal-form" class="modal fade" aria-hidden="true">
@@ -130,7 +134,7 @@
             </div>
         </div>
 
-        <!-- Trigger 修改 -->
+        <!-- Quartz.NET表单，Trigger修改弹窗 -->
         <div id="modal-editform" class="modal fade" aria-hidden="true">
             <div class="modal-dialog" style="width:30%">
                 <div class="modal-content">
@@ -154,12 +158,17 @@
         </div>
 
     </div>
-    <!-- JavaScript -->
+    <!-- jquery-1.10.2.min.js -->
     <script type="text/javascript" src="~/Content/Scripts/jquery-1.10.2.min.js"></script>
+    <!-- bootstrap.min.js -->
     <script type="text/javascript" src="~/Content/Scripts/bootstrap.min.js"></script>
+    <!-- jquery.uploadify.min.js -->
     <script type="text/javascript" src="~/Content/Scripts/jquery.uploadify.min.js"></script>
+    <!-- toastr.min.js -->
     <script type="text/javascript" src="~/Content/Scripts/toastr.min.js"></script>
+    <!-- vue.min.js -->
     <script type="text/javascript" src="~/Content/Scripts/vue.min.js"></script>
+    <!-- webScripts.QuartzManager.js -->
     <script type="text/javascript" src="~/Content/WebScripts/webScripts.QuartzManager.js"></script>
 </body>
 </html>

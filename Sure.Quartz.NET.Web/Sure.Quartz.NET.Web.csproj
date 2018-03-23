@@ -61,6 +61,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
@@ -219,6 +220,7 @@
     <Content Include="Content\Scripts\toastr.min.js" />
     <Content Include="Content\Scripts\vue.min.js" />
     <Content Include="Content\swf\uploadify.swf" />
+    <Content Include="Content\WebScripts\webScript.QuartzDurable.js" />
     <Content Include="Global.asax" />
     <Content Include="Content\Scripts\bootstrap.js" />
     <Content Include="Content\Scripts\bootstrap.min.js" />
@@ -268,6 +270,14 @@
     <ProjectReference Include="..\Quartz\Quartz.csproj">
       <Project>{aef8823b-e45b-4b35-a4d0-c08c1196d017}</Project>
       <Name>Quartz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sure.Quartz.NET.EFBase\Sure.Quartz.NET.EFBase.csproj">
+      <Project>{f617121a-7624-4004-86c9-bce8b2f5db58}</Project>
+      <Name>Sure.Quartz.NET.EFBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sure.Quartz.NET.IRepository\Sure.Quartz.NET.IRepository.csproj">
+      <Project>{d5c339ba-64e8-41bd-b45b-02317f5e1af8}</Project>
+      <Name>Sure.Quartz.NET.IRepository</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

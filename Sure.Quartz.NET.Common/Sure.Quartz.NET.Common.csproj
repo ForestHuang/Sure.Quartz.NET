@@ -41,7 +41,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enum\JobState.cs" />
+    <Compile Include="JobHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Quartz\Quartz.csproj">
+      <Project>{aef8823b-e45b-4b35-a4d0-c08c1196d017}</Project>
+      <Name>Quartz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sure.Quartz.NET.EFBase\Sure.Quartz.NET.EFBase.csproj">
+      <Project>{f617121a-7624-4004-86c9-bce8b2f5db58}</Project>
+      <Name>Sure.Quartz.NET.EFBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

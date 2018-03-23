@@ -9,12 +9,18 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>QuartzDurableHome - Job 持久化、集群</title>
-    <!-- Css -->
+    <!-- bootstrap.min.css -->
     <link type="text/css" href="~/Content/Css/bootstrap.min.css" rel="stylesheet" />
+    <!-- style.min.css -->
     <link type="text/css" href="~/Content/Css/style.min.css" rel="stylesheet" />
+    <!-- font-awesome.min.css -->
     <link type="text/css" href="~/Content/Css/font-awesome.min.css" rel="stylesheet" />
+    <!-- uploadify.css -->
     <link type="text/css" href="~/Content/Css/uploadify.css" rel="stylesheet" />
+    <!-- toastr.min.css -->
     <link type="text/css" href="~/Content/Css/toastr.min.css" rel="stylesheet" />
+    <!-- bootstrap-datetimepicker.min.css -->
+    <link type="text/css" href="~/Content/Css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <style type="text/css">
         .btn-title {
             padding: 2px 15px;
@@ -35,7 +41,7 @@
                     </a>
                 </div>
             </div>
-
+            <!-- Table 表格， 列表 -->
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -58,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody id="jobListTbody">
-                    <tr v-for="job in jobs" data-jobId="job.JobId">
+                    <tr v-for="job in jobList" data-jobId="job.JobId">
                         <td v-for="(val, jobKey) in job" v-bind:name="jobKey">{{val}}</td>
                         <td>
                             <button v-on:click="jobModel=job" data-toggle="modal" href="#modal-editform" style="margin: 5px;" class="btn btn-primary btn-xs" type="button"><i class="glyphicon glyphicon-edit"></i> 编辑</button>
@@ -81,52 +87,46 @@
                                 <div class="col-sm-6 b-r">
                                     <div class="form-group">
                                         <label>任务名称：</label>
-                                        <input type="text" name="jobName" v-model="QuartzJobModel.jobName" required="required" class="form-control">
+                                        <input type="text" name="jobName" v-model="jobName" required="required" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>任务组名称：</label>
-                                        <input type="text" name="jobGroupName" v-model="QuartzJobModel.jobGroupName" class="form-control">
+                                        <input type="text" name="jobGroupName" v-model="jobGroupName" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>执行类名：</label><br />
-                                        <input type="text" name="fullJobName" v-model="QuartzJobModel.fullJobName" class="form-control fullJobName">
+                                        <input type="text" name="fullJobName" v-model="fullJobName" class="form-control fullJobName">
                                     </div>
                                     <div class="form-group">
                                         <label>请求地址：</label><br />
-                                        <input type="text" name="fullJobName" v-model="QuartzJobModel.fullJobName" class="form-control fullJobName">
+                                        <input type="text" name="requestUrl" v-model="requestUrl" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>任务描述：</label>
-                                        <input type="text" name="jobDescription" v-model="QuartzJobModel.jobDescription" class="form-control">
+                                        <input type="text" name="description" v-model="description" class="form-control">
                                     </div>
                                 </div>
-
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>触发器名称：</label>
-                                        <input type="text" name="triggerName" v-model="QuartzJobModel.triggerName" class="form-control">
+                                        <input type="text" name="triggerName" v-model="triggerName" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>触发器组名称：</label>
-                                        <input type="text" name="triggerGroupName" v-model="QuartzJobModel.triggerGroupName" class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>执行周期表达式：</label>
-                                        <input type="text" name="cron" v-model="QuartzJobModel.cron" placeholder="* * * * * ?" class="form-control">
+                                        <input type="text" name="triggerGroupName" v-model="triggerGroupName" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>任务开始时间：</label>
-                                        <input type="text" class="form-control" id="datetimepicker" data-format="yyyy-mm-dd hh:ii" placeholder="xxx" name="jobStartTime">
+                                        <input type="text" name="startTime" v-model="startTime" id="datetimepicker" data-format="yyyy-mm-dd hh:ii" class="form-control ">
                                     </div>
                                     <div class="form-group">
                                         <label>任务结束时间：</label>
-                                        <input type="text" class="form-control" id="datetimepicker" data-format="yyyy-mm-dd hh:ii" placeholder="xxx" name="jobStartTime">
+                                        <input type="text" name="endTime" v-model="endTime" id="datetimepicker" data-format="yyyy-mm-dd hh:ii" class="form-control ">
                                     </div>
                                     <div class="form-group">
-                                        <label>触发器描述</label>
-                                        <input type="text" name="triggerDescription" v-model="QuartzJobModel.triggerDescription" class="form-control">
+                                        <label>执行周期表达式：</label>
+                                        <input type="text" name="cron" v-model="cron" placeholder="* * * * * ?" class="form-control">
                                     </div>
-
                                 </div>
                             </div>
                             <div>
@@ -141,12 +141,22 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- jquery-1.10.2.min.js -->
     <script type="text/javascript" src="~/Content/Scripts/jquery-1.10.2.min.js"></script>
+    <!-- bootstrap.min.js -->
     <script type="text/javascript" src="~/Content/Scripts/bootstrap.min.js"></script>
+    <!-- jquery.uploadify.min.js -->
     <script type="text/javascript" src="~/Content/Scripts/jquery.uploadify.min.js"></script>
+    <!-- toastr.min.js -->
     <script type="text/javascript" src="~/Content/Scripts/toastr.min.js"></script>
+    <!-- bootstrap-datetimepicker.min.js -->
+    <script type="text/javascript" src="~/Content/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <!-- bootstrap-datetimepicker.zh-CN.js -->
+    <script type="text/javascript" src="~/Content/Scripts/bootstrap-datetimepicker.zh-CN.js"></script>
+    <!-- vue.min.js -->
     <script type="text/javascript" src="~/Content/Scripts/vue.min.js"></script>
-    <script type="text/javascript" src="~/Content/WebScripts/webScripts.QuartzManager.js"></script>
+    <!-- webScripts.QuartzManager.js -->
+    <script type="text/javascript" src="~/Content/WebScripts/webScript.QuartzDurable.js"></script>
+
 </body>
 </html>

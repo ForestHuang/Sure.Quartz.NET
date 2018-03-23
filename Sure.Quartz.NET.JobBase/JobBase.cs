@@ -24,7 +24,7 @@ namespace Sure.Quartz.NET.JobBase
             catch (Exception ex)
             {
                 string requestURL = context.JobDetail.JobDataMap["requestUrl"].ToString();
-                string fullName = context.JobDetail.JobDataMap["fullName"].ToString();
+                string fullName = context.JobDetail.JobDataMap["fullJobName"].ToString();
                 string jobRecord = "";
                 if (!string.IsNullOrEmpty(requestURL))
                     jobRecord = $",requstURL:{requestURL}";

@@ -44,7 +44,7 @@
             var jobName = context.JobDetail.Key.Name;
             var jobGroupName = context.JobDetail.Key.Group;
             var requestURL = context.JobDetail.JobDataMap["requestUrl"].ToString();
-            var fullName = context.JobDetail.JobDataMap["fullName"].ToString();
+            var fullName = context.JobDetail.JobDataMap["fullJobName"].ToString();
             string jobRecord = "";
             if (!string.IsNullOrEmpty(requestURL))
                 jobRecord = $",requstURL:{requestURL}";

@@ -11,15 +11,21 @@
     using System.Linq;
     using System.Reflection;
     using System.Web.Mvc;
+    using System.ComponentModel.Composition;
+    using IRepository;
+    using EFBase;
 
     public class QuartzManagerController : Controller
     {
-        static IScheduler scheduler = null;
-        static readonly object Locker = new object();
+        IScheduler scheduler = null;
+        readonly object Locker = new object();
         const string channelType = "tcp";
         const string localIp = "localhost";
         const string port = "555";
         const string bindName = "QuartzScheduler";
+
+        [Import("JobInfo_Repository")]
+        private JobInfo_IRepository jobInfo_IRepository { get; set; }
 
         /// <summary>
         /// 无参构造
@@ -47,6 +53,22 @@
 
         //首页，任务展示 Job持久化
         public ActionResult QuartzDurableHome() { return View(); }
+
+        #region CURD Durable
+
+        //加载数据
+        //public ActionResult LoadDurable()
+        //{
+        //    jobInfo_IRepository.Load(x => x.Id, false, null, 1, 10);
+        //}
+
+        //新增数据
+        public ActionResult AddDurable(SURE_QRTZ_JOBINFO jobs)
+        {
+            return View();
+        }
+
+        #endregion
 
         #region CURD Job
 
