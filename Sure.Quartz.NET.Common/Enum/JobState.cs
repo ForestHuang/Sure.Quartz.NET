@@ -9,6 +9,7 @@
     /// <param name="NORMAL">NORMAL:正常</param>
     /// <param name="PAUSED">PAUSED:暂停</param>
     /// <param name="DELETE">DELETE:删除</param>
+    /// <param name="NOTRUNNIG">NOTRUNNIG:待运行</param>
     /// </summary>
     public enum JobState
     {
@@ -18,6 +19,7 @@
         NONE = -1,    //不存在
         NORMAL = 0,   //正常
         PAUSED = 1,    //暂停
+        NOTRUNNIG = 6,  //待运行
         DELETE = 5 //删除
     }
 }

@@ -14,6 +14,8 @@
     using System.ComponentModel.Composition;
     using IRepository;
     using EFBase;
+    using Newtonsoft.Json;
+    using Common;
 
     public class QuartzManagerController : Controller
     {
@@ -63,8 +65,11 @@
         //}
 
         //新增数据
-        public ActionResult AddDurable(SURE_QRTZ_JOBINFO jobs)
+        public ActionResult AddDurable(string jobs)
         {
+            var jobInfo = JsonConvert.DeserializeObject<SURE_QRTZ_JOBINFO>(jobs);
+            jobInfo.State = (int)JobState.NOTRUNNIG;
+            jobInfo.Deleted = false;
             return View();
         }
 

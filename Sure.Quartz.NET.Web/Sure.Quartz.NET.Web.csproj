@@ -271,6 +271,10 @@
       <Project>{aef8823b-e45b-4b35-a4d0-c08c1196d017}</Project>
       <Name>Quartz</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sure.Quartz.NET.Common\Sure.Quartz.NET.Common.csproj">
+      <Project>{4ff4132d-a00c-4c53-8aee-b3465d432e42}</Project>
+      <Name>Sure.Quartz.NET.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sure.Quartz.NET.EFBase\Sure.Quartz.NET.EFBase.csproj">
       <Project>{f617121a-7624-4004-86c9-bce8b2f5db58}</Project>
       <Name>Sure.Quartz.NET.EFBase</Name>

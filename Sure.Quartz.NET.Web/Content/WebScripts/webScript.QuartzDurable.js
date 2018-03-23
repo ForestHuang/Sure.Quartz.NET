@@ -1,5 +1,14 @@
 ﻿$(function () {
-    $("#datetimepicker").datetimepicker();
+    $("#datetimepicker-start").datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language: 'zh-CN',
+        pickerPosition: 'top-right'
+    });
+    $("#datetimepicker-end").datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language: 'zh-CN',
+        pickerPosition: 'top-right'
+    });
 });
 
 (function () {
@@ -24,8 +33,6 @@
             fullJobName: '',
             description: '',
             cron: '',
-            startTime: '',
-            endTime: '',
             requestUrl: ''
         }, mounted: function () {
             getJobInfoList.bind(this)(1, 10);
@@ -40,14 +47,14 @@
                     TriggerName: this.triggerName,
                     TriggerGroupName: this.triggerGroupName,
                     Cron: this.cron,
-                    StartTime: this.startTime,
-                    EndTime: this.endTime,
+                    StartTime: $("#datetimepicker-start").data("datetimepicker").getDate(),
+                    EndTime: $("#datetimepicker-end").data("datetimepicker").getDate(),
                     Description: this.description,
                     FullJobName: this.fullJobName,
                     RequestUrl: this.requestUrl
                 };
                 $.ajax({
-                    url: '/QuartzManager/AddDurable', type: 'POST', data: { jobs: formData }, contentType: false, processData: false,
+                    url: '/QuartzManager/AddDurable', type: 'POST', data: { jobs: JSON.stringify(formData) },
                     success: function (data) {
                         $('#modal-form-Durable').modal('hide');
                         toastr.success(data.Message);
