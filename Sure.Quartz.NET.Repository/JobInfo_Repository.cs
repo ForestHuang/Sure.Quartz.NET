@@ -16,11 +16,6 @@ namespace Sure.Quartz.NET.Repository
     /// </summary>
     public class JobInfo_Repository : JobInfo_IRepository
     {
-        /// <summary>
-        /// 数据库连接字符串
-        /// </summary>
-        private static string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["jobSqlConnectionString"].ConnectionString;
-
         private static JobEntities dbContext = null;
 
         /// <summary>

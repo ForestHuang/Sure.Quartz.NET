@@ -52,8 +52,9 @@
       <HintPath>..\packages\Common.Logging.Core.3.4.0\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\Quartz.NET+Topshelf\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -178,6 +179,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\MEFDependencySolver.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\QuartzManagerController.cs" />
@@ -282,6 +284,14 @@
     <ProjectReference Include="..\Sure.Quartz.NET.IRepository\Sure.Quartz.NET.IRepository.csproj">
       <Project>{d5c339ba-64e8-41bd-b45b-02317f5e1af8}</Project>
       <Name>Sure.Quartz.NET.IRepository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sure.Quartz.NET.JobBase\Sure.Quartz.NET.JobBase.csproj">
+      <Project>{f5c74c43-26e8-4524-934a-a25a805e6387}</Project>
+      <Name>Sure.Quartz.NET.JobBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sure.Quartz.NET.Repository\Sure.Quartz.NET.Repository.csproj">
+      <Project>{5e69ec64-40bb-42e0-9c90-68d56a420616}</Project>
+      <Name>Sure.Quartz.NET.Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

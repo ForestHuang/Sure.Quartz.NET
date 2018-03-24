@@ -41,8 +41,9 @@
       <HintPath>..\packages\Common.Logging.Core.3.4.0\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\..\..\浦发银行\2017-11-1 浦发携程中兴东航接口\2017-12-21 BTravelSettlement\BTravelSettlement\BTravelSettlement\bin\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,6 +70,10 @@
     <ProjectReference Include="..\Quartz\Quartz.csproj">
       <Project>{aef8823b-e45b-4b35-a4d0-c08c1196d017}</Project>
       <Name>Quartz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sure.Quartz.NET.JobBase\Sure.Quartz.NET.JobBase.csproj">
+      <Project>{f5c74c43-26e8-4524-934a-a25a805e6387}</Project>
+      <Name>Sure.Quartz.NET.JobBase</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

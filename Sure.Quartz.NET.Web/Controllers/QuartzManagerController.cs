@@ -17,6 +17,7 @@
     using Newtonsoft.Json;
     using Common;
 
+    [Export]
     public class QuartzManagerController : Controller
     {
         IScheduler scheduler = null;
@@ -68,9 +69,30 @@
         public ActionResult AddDurable(string jobs)
         {
             var jobInfo = JsonConvert.DeserializeObject<SURE_QRTZ_JOBINFO>(jobs);
+            var dllName = "";
+            var fullJobName = "Sure.Quartz.NET.JobBase.JobBase";
             jobInfo.State = (int)JobState.NOTRUNNIG;
             jobInfo.Deleted = false;
-            return View();
+            if (!string.IsNullOrEmpty(jobInfo.FullJobName.Trim()))
+            {
+                dllName = $"{jobInfo.FullJobName.Split('.')[0]}.dll";
+            }
+            else
+            {
+                dllName = $"Sure.Quartz.NET.JobBase.dll";
+                jobInfo.FullJobName = fullJobName;
+            }
+            jobInfo.DLLName = dllName;
+
+            var jobId = jobInfo_IRepository.Add(jobInfo);
+            if (jobId > 0)
+            {
+                return Json(new AjaxResponseData { StausCode = "success", Message = "添加成功", Data = null });
+            }
+            else
+            {
+                return Json(new AjaxResponseData { StausCode = "fail", Message = "添加失败", Data = null });
+            }
         }
 
         #endregion
