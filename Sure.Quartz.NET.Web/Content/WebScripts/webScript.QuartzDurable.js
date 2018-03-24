@@ -1,14 +1,7 @@
 ﻿$(function () {
-    $("#datetimepicker-start").datetimepicker({
-        format: 'yyyy-mm-dd hh:ii',
-        language: 'zh-CN',
-        pickerPosition: 'top-right'
-    });
-    $("#datetimepicker-end").datetimepicker({
-        format: 'yyyy-mm-dd hh:ii',
-        language: 'zh-CN',
-        pickerPosition: 'top-right'
-    });
+    $("#datetimepicker-start").datetimepicker({ format: 'yyyy-mm-dd hh:ii', language: 'zh-CN', pickerPosition: 'top-right' });
+
+    $("#datetimepicker-end").datetimepicker({ format: 'yyyy-mm-dd hh:ii', language: 'zh-CN', pickerPosition: 'top-right' });
 });
 
 (function () {
@@ -68,7 +61,7 @@
     //Get JobList
     function getJobInfoList(pageIndex, pageSize) {
         var _self = this;
-        $.get('/QuartzManager/LoadJobInfoData', {}, function (data) {
+        $.get('/QuartzManager/LoadDurable', {}, function (data) {
             _self.jobList = data;
         });
     }

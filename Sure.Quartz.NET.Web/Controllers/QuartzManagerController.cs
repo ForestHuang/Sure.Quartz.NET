@@ -60,10 +60,34 @@
         #region CURD Durable
 
         //加载数据
-        //public ActionResult LoadDurable()
-        //{
-        //    jobInfo_IRepository.Load(x => x.Id, false, null, 1, 10);
-        //}
+        public ActionResult LoadDurable()
+        {
+            try
+            {
+                var jobQueryable = jobInfo_IRepository.Load(x => x.Id, false, x => x.Id > 0, 1, 10);
+                var jobList = jobQueryable.Item1.ToList().Select(x => new
+                {
+                    x.Id,
+                    x.JobName,
+                    x.JobGroupName,
+                    x.TriggerName,
+                    x.TriggerGroupName,
+                    x.Cron,
+                    StartTime = x.StartTime.ToString("yyyy-MM-dd hh:mm:ss"),
+                    PreTime = x.PreTime.HasValue ? Convert.ToDateTime(x.PreTime).ToString("yyyy-MM-dd hh:mm:ss") : "",
+                    NextTime = x.NextTime.HasValue ? Convert.ToDateTime(x.NextTime).ToString("yyyy-MM-dd hh:mm:ss") : "",
+                    Deleted = x.Deleted == true ? "是" : "否",
+                    x.Description,
+                    State = GetState(x.State),
+                });
+
+                return Json(jobList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"查询数据失败,错误:{ex.Message}");
+            }
+        }
 
         //新增数据
         public ActionResult AddDurable(string jobs)
@@ -73,15 +97,8 @@
             var fullJobName = "Sure.Quartz.NET.JobBase.JobBase";
             jobInfo.State = (int)JobState.NOTRUNNIG;
             jobInfo.Deleted = false;
-            if (!string.IsNullOrEmpty(jobInfo.FullJobName.Trim()))
-            {
-                dllName = $"{jobInfo.FullJobName.Split('.')[0]}.dll";
-            }
-            else
-            {
-                dllName = $"Sure.Quartz.NET.JobBase.dll";
-                jobInfo.FullJobName = fullJobName;
-            }
+            if (!string.IsNullOrEmpty(jobInfo.FullJobName.Trim())) { dllName = $"{jobInfo.FullJobName.Split('.')[0]}.dll"; }
+            else { dllName = $"Sure.Quartz.NET.JobBase.dll"; jobInfo.FullJobName = fullJobName; }
             jobInfo.DLLName = dllName;
 
             var jobId = jobInfo_IRepository.Add(jobInfo);
@@ -284,6 +301,36 @@
             {
                 return Json(new AjaxResponseData { StausCode = "fail", Message = "修改失败", Data = null });
             }
+        }
+
+        #endregion
+
+        #region private
+
+        public string GetState(int stateIndex)
+        {
+            string stateName = "";
+            switch (stateIndex)
+            {
+                case 6:
+                    stateName = "待运行";
+                    break;
+                case 5:
+                    stateName = "已删除";
+                    break;
+                case 1:
+                    stateName = "已暂停";
+                    break;
+                case 0:
+                    stateName = "正常";
+                    break;
+                case 2:
+                    stateName = "完成";
+                    break;
+                default:
+                    break;
+            }
+            return stateName;
         }
 
         #endregion

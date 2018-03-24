@@ -105,7 +105,7 @@ namespace Sure.Quartz.NET.Repository
                     Cron = jobInfoModel.Cron,
                     Deleted = false,
                     Description = jobInfoModel.Description,
-                    State = (int)JobState.PAUSED,
+                    State = jobInfoModel.State,
                     PreTime = null,
                     NextTime = null,
                     DLLName = $"{jobInfoModel.DLLName}.dll",

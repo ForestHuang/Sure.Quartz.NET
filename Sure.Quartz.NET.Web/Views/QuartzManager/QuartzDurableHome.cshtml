@@ -48,18 +48,15 @@
                         <th style="width:4%;">编号</th>
                         <th>任务名称</th>
                         <th>任务组名称</th>
-                        <th style="width:6.5%;">是否持久化</th>
                         <th>触发器名称</th>
                         <th>触发器组名称</th>
-                        <th>状态</th>
                         <th style="width:8%;">任务执行周期</th>
                         <th>启动时间</th>
-                        <th>执行接口</th>
                         <th style="width:8%;">本次执行时间</th>
                         <th style="width:8%;">下次执行时间</th>
-                        <th style="width:8%;">任务描述</th>
-                        <th style="width:8%;">触发器描述</th>
-                        <th style="width:4.5%;">优先级</th>
+                        <th style="width:5%;">是否删除</th>
+                        <th style="width:8%;">描述</th>
+                        <th>状态</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -67,6 +64,7 @@
                     <tr v-for="job in jobList" data-jobId="job.JobId">
                         <td v-for="(val, jobKey) in job" v-bind:name="jobKey">{{val}}</td>
                         <td>
+                            <button v-on:click.stop="pauseJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button"><i class="glyphicon glyphicon-play"></i>运行</button>
                             <button v-on:click="jobModel=job" data-toggle="modal" href="#modal-editform" style="margin: 5px;" class="btn btn-primary btn-xs" type="button"><i class="glyphicon glyphicon-edit"></i> 编辑</button>
                             <button v-on:click.stop="pauseJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button"><i class="glyphicon glyphicon-pause"></i> 暂停</button>
                             <button v-on:click.stop="resumeJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button"><i class="glyphicon glyphicon-play"></i> 恢复</button>
