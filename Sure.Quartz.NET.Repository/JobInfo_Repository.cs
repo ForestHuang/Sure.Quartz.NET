@@ -108,7 +108,7 @@ namespace Sure.Quartz.NET.Repository
                     State = jobInfoModel.State,
                     PreTime = null,
                     NextTime = null,
-                    DLLName = $"{jobInfoModel.DLLName}.dll",
+                    DLLName = $"{jobInfoModel.DLLName}",
                     FullJobName = jobInfoModel.FullJobName,
                     RequestUrl = jobInfoModel.RequestUrl,
                     StartTime = jobInfoModel.StartTime == null ? DateTimeOffset.UtcNow.LocalDateTime : jobInfoModel.StartTime,

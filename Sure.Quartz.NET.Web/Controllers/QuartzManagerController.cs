@@ -30,6 +30,9 @@
         [Import("JobInfo_Repository")]
         private JobInfo_IRepository jobInfo_IRepository { get; set; }
 
+        [Import("JobHelper")]
+        private JobHelper jbHelper { get; set; }
+
         /// <summary>
         /// 无参构造
         /// </summary>
@@ -109,6 +112,28 @@
             else
             {
                 return Json(new AjaxResponseData { StausCode = "fail", Message = "添加失败", Data = null });
+            }
+        }
+
+        //运行
+        public ActionResult RunJobDurable(string jobs)
+        {
+            var jobInfo = JsonConvert.DeserializeObject<SURE_QRTZ_JOBINFO>(jobs);
+            var jobInfoNew = jobInfo_IRepository.Load(x => x.Id, false, x => x.Id == jobInfo.Id, 1, 10).Item1.FirstOrDefault();
+
+            try
+            {
+                if (jbHelper.RunJob(jobInfoNew))
+                {
+                    jobInfoNew.State = (int)JobState.NORMAL;
+                    jobInfoNew.Deleted = false;
+                    jobInfo_IRepository.Update(jobInfoNew);
+                }
+                return Json(new AjaxResponseData { StausCode = "success", Message = "运行成功", Data = null });
+            }
+            catch (Exception ex)
+            {
+                return Json(new AjaxResponseData { StausCode = "fail", Message = "运行失败", Data = null });
             }
         }
 

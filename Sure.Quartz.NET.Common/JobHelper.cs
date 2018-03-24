@@ -4,10 +4,12 @@ using Sure.Quartz.NET.EFBase;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel.Composition;
 using System.Reflection;
 
 namespace Sure.Quartz.NET.Common
 {
+    [Export("JobHelper", typeof(JobHelper))]
     public class JobHelper
     {
         IScheduler scheduler = null;

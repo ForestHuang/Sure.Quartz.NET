@@ -55,6 +55,18 @@
                     }
                 })
             }
+            , runJob: function (jobInfo) {
+                jobInfo.State = 0,
+                jobInfo.Deleted = false;
+                $.ajax({
+                    url: '/QuartzManager/RunJobDurable', type: 'POST', data: { jobs: JSON.stringify(jobInfo) },
+                    success: function (data) {
+                        if (data.StausCode == 'success') {
+                            toastr.success("运行成功");
+                        } else { toastr.error("运行失败"); }
+                    }
+                })
+            }
         }
     });
 

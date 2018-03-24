@@ -35,6 +35,7 @@ namespace Sure.Quartz.NET.IRepository
         /// <param name="jobInfoModel">数据信息</param>
         /// <returns>ID</returns>
         int Update(SURE_QRTZ_JOBINFO jobInfoModel);
+        
         /// <summary>
         /// 添加数据
         /// </summary>
