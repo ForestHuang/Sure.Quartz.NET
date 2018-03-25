@@ -14,7 +14,7 @@
         /// <summary>
         /// Log4net 配置
         /// </summary>
-        private readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static ILog log = LogManager.GetLogger(typeof(JobListener));
 
         private Dictionary<string, Stopwatch> stopwatches = new Dictionary<string, Stopwatch>();
 
@@ -40,6 +40,12 @@
         //Scheduler在JobDetail被执行之后调用这个方法。
         public void JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException)
         {
+            /// <summary>
+            /// Log4net 配置
+            /// </summary>
+            var log4netPath = $"{AppDomain.CurrentDomain.BaseDirectory}log4net\\log4net.config";
+            log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(log4netPath));
+
             var elapsed = stopwatches[context.FireInstanceId].ElapsedMilliseconds;
             var jobName = context.JobDetail.Key.Name;
             var jobGroupName = context.JobDetail.Key.Group;
@@ -53,6 +59,7 @@
 
             string message = $"JobName:[{jobName}],JobGroupName:[{jobGroupName}]{jobRecord},耗时:[{elapsed}ms]";
             log.Info(message);
+            Console.WriteLine(message);
         }
     }
 }

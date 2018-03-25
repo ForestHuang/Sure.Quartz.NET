@@ -1,4 +1,4 @@
-﻿using log4net.Config;
+﻿using log4net;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Impl.Matchers;
@@ -12,11 +12,6 @@ namespace Sure.Quartz.NET.RemoteServer
     {
         static void Main(string[] args)
         {
-            /// <summary>
-            /// Log4net 配置
-            /// </summary>
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"\log4net.config")));
-
             var properties = new NameValueCollection();
             //线程池配置
             properties["quartz.threadPool.type"] = "Quartz.Simpl.SimpleThreadPool, Quartz";
