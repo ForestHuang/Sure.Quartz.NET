@@ -53,7 +53,6 @@
 
             string message = $"JobName:[{jobName}],JobGroupName:[{jobGroupName}]{jobRecord},耗时:[{elapsed}ms]";
             log.Info(message);
-            Console.WriteLine(message);
         }
     }
 }

@@ -16,6 +16,9 @@
     var vm = new Vue({
         el: '#job-durable',
         data: {
+            isShowRun: true,
+            isShowPause: true,
+            isShowResume: true,
             jobList: [],
             jobModel: null,
             //JobInfo
@@ -26,7 +29,8 @@
             fullJobName: '',
             description: '',
             cron: '',
-            requestUrl: ''
+            requestUrl: '',
+            checkExists: false
         }, mounted: function () {
             getJobInfoList.bind(this)(1, 100);
         }, methods: {
@@ -109,6 +113,9 @@
                     }
                 })
             }
+            , checkExists: function (jobInfo) {
+                return false;
+            }
         }
     });
 
@@ -119,5 +126,6 @@
             _self.jobList = data;
         });
     }
+
     window.vm = vm;
 })();

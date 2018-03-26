@@ -174,6 +174,17 @@ namespace Sure.Quartz.NET.Common
             return scheduler.GetTriggerState(new TriggerKey(triggerName, triggerGroupName));
         }
 
+        /// <summary>
+        /// 任务是否存在Scheduler中
+        /// </summary>
+        /// <param name="jobName">任务名称</param>
+        /// <param name="jobGroupName">任务分组名称</param>
+        /// <returns>bool</returns>
+        public bool CheckExists(string jobName, string jobGroupName)
+        {
+            return scheduler.CheckExists(new JobKey(jobName, jobGroupName));
+        }
+
         #region private
 
         /// <summary>

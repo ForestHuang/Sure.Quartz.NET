@@ -64,16 +64,16 @@
                     <tr v-for="job in jobList" data-jobId="job.JobId">
                         <td v-for="(val, jobKey) in job" v-bind:name="jobKey">{{val}}</td>
                         <td>
-                            <button v-show="isShowRun" v-on:click.stop="runJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button">
+                            <button v-if="checkExists(job)" v-on:click.stop="runJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button">
                                 <i class="glyphicon glyphicon-play"></i> 运行
                             </button>
-                            <button v-show="isShowPause" v-on:click.stop="pauseJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button">
+                            <button v-on:click.stop="pauseJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button">
                                 <i class="glyphicon glyphicon-pause"></i> 暂停
                             </button>
-                            <button v-show="isShowResume" v-on:click.stop="resumeJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button">
+                            <button v-on:click.stop="resumeJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button">
                                 <i class="glyphicon glyphicon-play"></i> 恢复
                             </button>
-                            <button v-on:click.stop="" style="margin: 5px;" class="btn btn-primary btn-xs" type="button">
+                            <button v-on:click.stop="deleteJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button">
                                 <i class="glyphicon glyphicon-remove"></i> 删除
                             </button>
                         </td>

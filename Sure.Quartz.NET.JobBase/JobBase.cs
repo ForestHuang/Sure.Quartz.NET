@@ -1,4 +1,4 @@
-﻿using Common.Logging;
+﻿using log4net;
 using Quartz;
 using System;
 using System.Net.Http;
