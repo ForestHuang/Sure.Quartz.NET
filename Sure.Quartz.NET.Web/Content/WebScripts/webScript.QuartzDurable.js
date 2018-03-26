@@ -28,10 +28,12 @@
             cron: '',
             requestUrl: ''
         }, mounted: function () {
-            getJobInfoList.bind(this)(1, 10);
+            getJobInfoList.bind(this)(1, 100);
         }, methods: {
-            loadGetJob: function () {
-                getJobInfoList.bind(this)(1, 10);
+            Load: function () {
+                $.get('/QuartzManager/LoadDurable', {}, function (data) {
+                    vm.jobList = data;
+                });
             }
             , addJob: function (event) {
                 var formData = {
@@ -51,12 +53,12 @@
                     success: function (data) {
                         $('#modal-form-Durable').modal('hide');
                         toastr.success(data.Message);
-                        //$('#nav-jobStatus li[data-jobStatus=-1]').click();
+                        vm.$options.methods.Load();
                     }
                 })
             }
             , runJob: function (jobInfo) {
-                jobInfo.State = 0,
+                jobInfo.State = 0;
                 jobInfo.Deleted = false;
                 $.ajax({
                     url: '/QuartzManager/RunJobDurable', type: 'POST', data: { jobs: JSON.stringify(jobInfo) },
@@ -64,6 +66,46 @@
                         if (data.StausCode == 'success') {
                             toastr.success("运行成功");
                         } else { toastr.error("运行失败"); }
+                        vm.$options.methods.Load();
+                    }
+                })
+            }
+            , pauseJob: function (jobInfo) {
+                jobInfo.State = 0;
+                jobInfo.Deleted = false;
+                $.ajax({
+                    url: '/QuartzManager/PauseJobDurable', type: 'POST', data: { jobs: JSON.stringify(jobInfo) },
+                    success: function (data) {
+                        if (data.StausCode == 'success') {
+                            toastr.success("暂停成功");
+                        } else { toastr.error("暂停失败"); }
+                        vm.$options.methods.Load();
+                    }
+                })
+            }
+            , resumeJob: function (jobInfo) {
+                jobInfo.State = 0;
+                jobInfo.Deleted = false;
+                $.ajax({
+                    url: '/QuartzManager/ResumeJobDurable', type: 'POST', data: { jobs: JSON.stringify(jobInfo) },
+                    success: function (data) {
+                        if (data.StausCode == 'success') {
+                            toastr.success("恢复成功");
+                        } else { toastr.error("恢复失败"); }
+                        vm.$options.methods.Load();
+                    }
+                })
+            }
+            , deleteJob: function (jobInfo) {
+                jobInfo.State = 0;
+                jobInfo.Deleted = false;
+                $.ajax({
+                    url: '/QuartzManager/ResumeJobDurable', type: 'POST', data: { jobs: JSON.stringify(jobInfo) },
+                    success: function (data) {
+                        if (data.StausCode == 'success') {
+                            toastr.success("删除成功");
+                        } else { toastr.error("删除失败"); }
+                        vm.$options.methods.Load();
                     }
                 })
             }

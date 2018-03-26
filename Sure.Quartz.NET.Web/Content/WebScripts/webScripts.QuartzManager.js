@@ -26,8 +26,10 @@
         }, mounted: function () {
             getJobInfoList.bind(this)(1, 10);
         }, methods: {
-            loadGetJob: function () {
-                getJobInfoList.bind(this)(1, 10);
+            load: function () {
+                $.get('/QuartzManager/LoadDurable', {}, function (data) {
+                    vm.jobList = data;
+                });
             }
             , addJob: function (event) {
                 var formData = new FormData($('#job-form')[0]);
@@ -36,7 +38,7 @@
                     success: function (data) {
                         $('#modal-form').modal('hide');
                         toastr.success(data.Message);
-                        $('#nav-jobStatus li[data-jobStatus=-1]').click();
+                        vm.$options.methods.Load();
                     }
                 })
             }
@@ -50,8 +52,8 @@
                     }, function (data) {
                         if (data.StausCode == 'success') {
                             toastr.success("暂停成功");
-                            $('#nav-jobStatus li[data-jobStatus=-1]').click();
                         } else { toastr.error("暂停失败"); }
+                        vm.$options.methods.Load();
                     });
             }
             , resumeJob: function (jobInfo) {
@@ -65,6 +67,7 @@
                         if (data.StausCode == 'success') {
                             toastr.success("恢复成功");
                         } else { toastr.error("恢复失败"); }
+                        vm.$options.methods.Load();
                     });
             }
             , deleteJob: function (jobInfo) {
@@ -77,8 +80,8 @@
                     }, function (data) {
                         if (data.StausCode == 'success') {
                             toastr.success("删除成功");
-                            $('#nav-jobStatus li[data-jobStatus=-1]').click();
                         } else { toastr.error("删除失败"); }
+                        vm.$options.methods.Load();
                     });
             }
             , editJob: function (jobInfo) {
@@ -92,8 +95,8 @@
                         if (data.StausCode == 'success') {
                             $('#modal-form').modal('hide');
                             toastr.success("修改成功");
-                            $('#nav-jobStatus li[data-jobStatus=-1]').click();
                         } else { $('#modal-form').modal('hide'); toastr.error("修改失败"); }
+                        vm.$options.methods.Load();
                     });
             }
         }

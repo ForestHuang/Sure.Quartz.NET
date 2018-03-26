@@ -83,7 +83,6 @@
                     x.Description,
                     State = GetState(x.State),
                 });
-
                 return Json(jobList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -120,20 +119,83 @@
         {
             var jobInfo = JsonConvert.DeserializeObject<SURE_QRTZ_JOBINFO>(jobs);
             var jobInfoNew = jobInfo_IRepository.Load(x => x.Id, false, x => x.Id == jobInfo.Id, 1, 10).Item1.FirstOrDefault();
-
             try
             {
                 if (jbHelper.RunJob(jobInfoNew))
                 {
                     jobInfoNew.State = (int)JobState.NORMAL;
                     jobInfoNew.Deleted = false;
-                    jobInfo_IRepository.Update(jobInfoNew);
+                    jobInfo_IRepository.Add(jobInfoNew);
+                    return Json(new AjaxResponseData { StausCode = "success", Message = "运行成功", Data = null });
                 }
-                return Json(new AjaxResponseData { StausCode = "success", Message = "运行成功", Data = null });
+                return Json(new AjaxResponseData { StausCode = "fail", Message = "运行失败", Data = null });
             }
             catch (Exception ex)
             {
                 return Json(new AjaxResponseData { StausCode = "fail", Message = "运行失败", Data = null });
+            }
+        }
+
+        //暂停
+        public ActionResult PauseJobDurable(string jobs)
+        {
+            var jobInfo = JsonConvert.DeserializeObject<SURE_QRTZ_JOBINFO>(jobs);
+            var jobInfoNew = jobInfo_IRepository.Load(x => x.Id, false, x => x.Id == jobInfo.Id, 1, 10).Item1.FirstOrDefault();
+            try
+            {
+                jobInfoNew.State = (int)JobState.PAUSED;
+                if (jbHelper.PauseJob(jobInfoNew))
+                {
+                    jobInfo_IRepository.Update(jobInfoNew);
+                    return Json(new AjaxResponseData { StausCode = "success", Message = "暂停成功", Data = null });
+                }
+                return Json(new AjaxResponseData { StausCode = "fail", Message = "暂停失败", Data = null });
+            }
+            catch (Exception ex)
+            {
+                return Json(new AjaxResponseData { StausCode = "fail", Message = "暂停失败", Data = null });
+            }
+        }
+
+        //恢复
+        public ActionResult ResumeJobDurable(string jobs)
+        {
+            var jobInfo = JsonConvert.DeserializeObject<SURE_QRTZ_JOBINFO>(jobs);
+            var jobInfoNew = jobInfo_IRepository.Load(x => x.Id, false, x => x.Id == jobInfo.Id, 1, 10).Item1.FirstOrDefault();
+            try
+            {
+                jobInfoNew.State = (int)JobState.NORMAL;
+                if (jbHelper.ResumeJob(jobInfoNew))
+                {
+                    jobInfo_IRepository.Update(jobInfoNew);
+                    return Json(new AjaxResponseData { StausCode = "success", Message = "恢复成功", Data = null });
+                }
+                return Json(new AjaxResponseData { StausCode = "fail", Message = "恢复失败", Data = null });
+            }
+            catch (Exception ex)
+            {
+                return Json(new AjaxResponseData { StausCode = "fail", Message = "恢复失败", Data = null });
+            }
+        }
+
+        //删除
+        public ActionResult DeleteJobDurable(string jobs)
+        {
+            var jobInfo = JsonConvert.DeserializeObject<SURE_QRTZ_JOBINFO>(jobs);
+            var jobInfoNew = jobInfo_IRepository.Load(x => x.Id, false, x => x.Id == jobInfo.Id, 1, 10).Item1.FirstOrDefault();
+            try
+            {
+                jobInfoNew.State = (int)JobState.DELETE;
+                if (jbHelper.DeleteJob(jobInfoNew))
+                {
+                    jobInfo_IRepository.Delete(jobInfoNew.Id);
+                    return Json(new AjaxResponseData { StausCode = "success", Message = "删除成功", Data = null });
+                }
+                return Json(new AjaxResponseData { StausCode = "fail", Message = "删除失败", Data = null });
+            }
+            catch (Exception ex)
+            {
+                return Json(new AjaxResponseData { StausCode = "fail", Message = "删除失败", Data = null });
             }
         }
 
@@ -332,6 +394,11 @@
 
         #region private
 
+        /// <summary>
+        /// 任务状态
+        /// </summary>
+        /// <param name="stateIndex">状态ID</param>
+        /// <returns>状态名</returns>
         public string GetState(int stateIndex)
         {
             string stateName = "";

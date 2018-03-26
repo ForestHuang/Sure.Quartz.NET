@@ -1,7 +1,7 @@
 ﻿namespace Sure.Quartz.NET.RemoteServer
 {
-    using Common.Logging;
     using global::Quartz;
+    using log4net;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -40,12 +40,6 @@
         //Scheduler在JobDetail被执行之后调用这个方法。
         public void JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException)
         {
-            /// <summary>
-            /// Log4net 配置
-            /// </summary>
-            var log4netPath = $"{AppDomain.CurrentDomain.BaseDirectory}log4net\\log4net.config";
-            log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(log4netPath));
-
             var elapsed = stopwatches[context.FireInstanceId].ElapsedMilliseconds;
             var jobName = context.JobDetail.Key.Name;
             var jobGroupName = context.JobDetail.Key.Group;

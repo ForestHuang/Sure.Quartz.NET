@@ -69,8 +69,12 @@ namespace Sure.Quartz.NET.Common
                         .Build();
 
                     scheduler.ScheduleJob(job, trigger);
+                    return true;
                 }
-                return true;
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -143,7 +147,7 @@ namespace Sure.Quartz.NET.Common
         /// </summary>
         /// <param name="jobInfo">任务信息</param>
         /// <returns>是否成功</returns>
-        public bool ModifyJobCron(SURE_QRTZ_JOBINFO jobInfo)
+        public bool EditJobCron(SURE_QRTZ_JOBINFO jobInfo)
         {
             CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.CronSchedule(jobInfo.Cron);
             var triggerKey = new TriggerKey(jobInfo.TriggerName, jobInfo.TriggerGroupName);
@@ -159,8 +163,26 @@ namespace Sure.Quartz.NET.Common
             return true;
         }
 
+        /// <summary>
+        /// 获取触发器状态
+        /// </summary>
+        /// <param name="triggerName">触发器名称</param>
+        /// <param name="triggerGroupName">触发器分组名</param>
+        /// <returns>TriggerState</returns>
+        public TriggerState GetJobState(string triggerName, string triggerGroupName)
+        {
+            return scheduler.GetTriggerState(new TriggerKey(triggerName, triggerGroupName));
+        }
+
         #region private
 
+        /// <summary>
+        /// 创建JobDataMap - 键值对
+        /// </summary>
+        /// <typeparam name="T">泛型，占位符</typeparam>
+        /// <param name="propertyName">键</param>
+        /// <param name="propertyValue">值</param>
+        /// <returns>JobDataMap</returns>
         private JobDataMap createJobDataMap<T>(string propertyName, T propertyValue)
         {
             return new JobDataMap(new Dictionary<string, T>() { { propertyName, propertyValue } });

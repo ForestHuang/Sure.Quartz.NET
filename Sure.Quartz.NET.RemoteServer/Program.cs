@@ -10,8 +10,16 @@ namespace Sure.Quartz.NET.RemoteServer
 {
     public class Program
     {
+        /// <summary>
+        /// Log4net 配置
+        /// </summary>
+        public static string log4netPath = $"{AppDomain.CurrentDomain.BaseDirectory}log4net\\log4net.config";
+
+        //入口
         static void Main(string[] args)
         {
+            log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(log4netPath));
+
             var properties = new NameValueCollection();
             //线程池配置
             properties["quartz.threadPool.type"] = "Quartz.Simpl.SimpleThreadPool, Quartz";
