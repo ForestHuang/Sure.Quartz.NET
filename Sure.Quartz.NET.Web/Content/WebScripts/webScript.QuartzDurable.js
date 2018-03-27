@@ -29,8 +29,7 @@
             fullJobName: '',
             description: '',
             cron: '',
-            requestUrl: '',
-            checkExists: false
+            requestUrl: ''
         }, mounted: function () {
             getJobInfoList.bind(this)(1, 100);
         }, methods: {
@@ -112,9 +111,6 @@
                         vm.$options.methods.Load();
                     }
                 })
-            }
-            , checkExists: function (jobInfo) {
-                return false;
             }
         }
     });

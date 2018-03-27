@@ -26,9 +26,9 @@
         }, mounted: function () {
             getJobInfoList.bind(this)(1, 10);
         }, methods: {
-            load: function () {
-                $.get('/QuartzManager/LoadDurable', {}, function (data) {
-                    vm.jobList = data;
+            Load: function () {
+                $.get('/QuartzManager/LoadJobInfoData', {}, function (data) {
+                    vm.jobs = data;
                 });
             }
             , addJob: function (event) {
@@ -109,5 +109,6 @@
             _self.jobs = data;
         });
     }
+
     window.vm = vm;
 })();

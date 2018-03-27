@@ -34,5 +34,6 @@ namespace Sure.Quartz.NET.JobBase
                 log.Error($"{message},错误信息:{ex.Message}");
             }
         }
+
     }
 }

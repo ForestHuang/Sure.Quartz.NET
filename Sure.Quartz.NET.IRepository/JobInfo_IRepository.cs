@@ -35,7 +35,7 @@ namespace Sure.Quartz.NET.IRepository
         /// <param name="jobInfoModel">数据信息</param>
         /// <returns>ID</returns>
         int Update(SURE_QRTZ_JOBINFO jobInfoModel);
-        
+
         /// <summary>
         /// 添加数据
         /// </summary>
@@ -49,5 +49,31 @@ namespace Sure.Quartz.NET.IRepository
         /// <param name="Id">数据ID</param>
         /// <returns>ID</returns>
         int Delete(int Id);
+
+        /// <summary>
+        /// 加载数据信息，多条数据
+        /// </summary>
+        /// <typeparam name="T">占位符，泛型</typeparam>
+        /// <param name="whereLambda">条件表达式</param>
+        /// <param name="orderByLambda">排序表达式</param>
+        /// <param name="isAsc">是否排序</param>
+        /// <param name="pageIndex">当前页</param>
+        /// <param name="pageSize">每页显示数</param>
+        /// <returns>数据信息</returns>
+        Tuple<IQueryable<QRTZ_CRON_TRIGGERS>, int> Load<T>(Expression<Func<QRTZ_CRON_TRIGGERS, T>> orderByLambda, bool isAsc, Expression<Func<QRTZ_CRON_TRIGGERS, bool>> whereLambda = null, int pageIndex = 1, int pageSize = 10);
+
+        /// <summary>
+        /// 加载数据信息，多条数据
+        /// </summary>
+        /// <typeparam name="T">占位符，泛型</typeparam>
+        /// <param name="whereLambda">条件表达式</param>
+        /// <param name="orderByLambda">排序表达式</param>
+        /// <param name="isAsc">是否排序</param>
+        /// <param name="pageIndex">当前页</param>
+        /// <param name="pageSize">每页显示数</param>
+        /// <returns>数据信息</returns>
+        Tuple<IQueryable<QRTZ_TRIGGERS>, int> Load<T>(Expression<Func<QRTZ_TRIGGERS, T>> orderByLambda, bool isAsc, Expression<Func<QRTZ_TRIGGERS, bool>> whereLambda = null, int pageIndex = 1, int pageSize = 10);
+
+
     }
 }

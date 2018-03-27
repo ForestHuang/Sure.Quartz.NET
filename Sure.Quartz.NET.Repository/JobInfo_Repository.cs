@@ -140,5 +140,57 @@ namespace Sure.Quartz.NET.Repository
                 throw new Exception($"删除失败,Message:{ex.Message}");
             }
         }
+
+        /// <summary>
+        /// 加载数据信息，多条数据
+        /// </summary>
+        /// <typeparam name="T">占位符，泛型</typeparam>
+        /// <param name="whereLambda">条件表达式</param>
+        /// <param name="orderByLambda">排序表达式</param>
+        /// <param name="isAsc">是否排序</param>
+        /// <param name="pageIndex">当前页</param>
+        /// <param name="pageSize">每页显示数</param>
+        /// <returns>数据信息</returns>
+        public Tuple<IQueryable<QRTZ_CRON_TRIGGERS>, int> Load<T>(Expression<Func<QRTZ_CRON_TRIGGERS, T>> orderByLambda, bool isAsc, Expression<Func<QRTZ_CRON_TRIGGERS, bool>> whereLambda = null, int pageIndex = 1, int pageSize = 10)
+        {
+            try
+            {
+                var jobInfoModelQueryable = dbContext.QRTZ_CRON_TRIGGERS.Where(whereLambda);
+                int totalCount = jobInfoModelQueryable.Count();
+                return new Tuple<IQueryable<QRTZ_CRON_TRIGGERS>, int>(isAsc
+                    ? jobInfoModelQueryable.OrderBy(orderByLambda).Skip(pageIndex - 1).Take(pageSize)
+                    : jobInfoModelQueryable.OrderByDescending(orderByLambda).Skip((pageIndex - 1) * pageSize).Take(pageSize), totalCount);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"多个查询失败,Message:{ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 加载数据信息，多条数据
+        /// </summary>
+        /// <typeparam name="T">占位符，泛型</typeparam>
+        /// <param name="whereLambda">条件表达式</param>
+        /// <param name="orderByLambda">排序表达式</param>
+        /// <param name="isAsc">是否排序</param>
+        /// <param name="pageIndex">当前页</param>
+        /// <param name="pageSize">每页显示数</param>
+        /// <returns>数据信息</returns>
+        public Tuple<IQueryable<QRTZ_TRIGGERS>, int> Load<T>(Expression<Func<QRTZ_TRIGGERS, T>> orderByLambda, bool isAsc, Expression<Func<QRTZ_TRIGGERS, bool>> whereLambda = null, int pageIndex = 1, int pageSize = 10)
+        {
+            try
+            {
+                var jobInfoModelQueryable = dbContext.QRTZ_TRIGGERS.Where(whereLambda);
+                int totalCount = jobInfoModelQueryable.Count();
+                return new Tuple<IQueryable<QRTZ_TRIGGERS>, int>(isAsc
+                    ? jobInfoModelQueryable.OrderBy(orderByLambda).Skip(pageIndex - 1).Take(pageSize)
+                    : jobInfoModelQueryable.OrderByDescending(orderByLambda).Skip((pageIndex - 1) * pageSize).Take(pageSize), totalCount);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"多个查询失败,Message:{ex.Message}");
+            }
+        }
     }
 }

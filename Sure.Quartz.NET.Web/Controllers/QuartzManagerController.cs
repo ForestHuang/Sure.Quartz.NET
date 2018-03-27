@@ -16,6 +16,7 @@
     using EFBase;
     using Newtonsoft.Json;
     using Common;
+    using System.Linq.Expressions;
 
     [Export]
     public class QuartzManagerController : Controller
@@ -97,7 +98,7 @@
             var jobInfo = JsonConvert.DeserializeObject<SURE_QRTZ_JOBINFO>(jobs);
             var dllName = "";
             var fullJobName = "Sure.Quartz.NET.JobBase.JobBase";
-            jobInfo.State = (int)JobState.NOTRUNNIG;
+            jobInfo.State = (int)JobState.NOTRUNNIG; //待运行
             jobInfo.Deleted = false;
             if (!string.IsNullOrEmpty(jobInfo.FullJobName.Trim())) { dllName = $"{jobInfo.FullJobName.Split('.')[0]}.dll"; }
             else { dllName = $"Sure.Quartz.NET.JobBase.dll"; jobInfo.FullJobName = fullJobName; }
@@ -123,9 +124,9 @@
             {
                 if (jbHelper.RunJob(jobInfoNew))
                 {
-                    jobInfoNew.State = (int)JobState.NORMAL;
+                    jobInfoNew.State = (int)JobState.NORMAL;  //正常
                     jobInfoNew.Deleted = false;
-                    jobInfo_IRepository.Add(jobInfoNew);
+                    jobInfo_IRepository.Update(jobInfoNew);
                     return Json(new AjaxResponseData { StausCode = "success", Message = "运行成功", Data = null });
                 }
                 return Json(new AjaxResponseData { StausCode = "fail", Message = "运行失败", Data = null });
@@ -143,7 +144,7 @@
             var jobInfoNew = jobInfo_IRepository.Load(x => x.Id, false, x => x.Id == jobInfo.Id, 1, 10).Item1.FirstOrDefault();
             try
             {
-                jobInfoNew.State = (int)JobState.PAUSED;
+                jobInfoNew.State = (int)JobState.PAUSED; //暂停
                 if (jbHelper.PauseJob(jobInfoNew))
                 {
                     jobInfo_IRepository.Update(jobInfoNew);
@@ -164,7 +165,7 @@
             var jobInfoNew = jobInfo_IRepository.Load(x => x.Id, false, x => x.Id == jobInfo.Id, 1, 10).Item1.FirstOrDefault();
             try
             {
-                jobInfoNew.State = (int)JobState.NORMAL;
+                jobInfoNew.State = (int)JobState.NORMAL; //正常
                 if (jbHelper.ResumeJob(jobInfoNew))
                 {
                     jobInfo_IRepository.Update(jobInfoNew);
@@ -185,7 +186,7 @@
             var jobInfoNew = jobInfo_IRepository.Load(x => x.Id, false, x => x.Id == jobInfo.Id, 1, 10).Item1.FirstOrDefault();
             try
             {
-                jobInfoNew.State = (int)JobState.DELETE;
+                jobInfoNew.State = (int)JobState.DELETE;  //已删除
                 if (jbHelper.DeleteJob(jobInfoNew))
                 {
                     jobInfo_IRepository.Delete(jobInfoNew.Id);
@@ -199,7 +200,24 @@
             }
         }
 
-        //public bool CheckExists() { }
+        //当前任务是否存在Scheduler中
+        public ActionResult CheckExists(string triggerName, string triggerGroupName)
+        {
+            try
+            {
+                bool bl = jbHelper.CheckExists(triggerName, triggerGroupName);
+                return Json(new AjaxResponseData
+                {
+                    StausCode = "fail",
+                    Message = "获取失败",
+                    Data = JsonConvert.SerializeObject(bl)
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new AjaxResponseData { StausCode = "fail", Message = "获取失败", Data = null }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         #endregion
 
@@ -274,7 +292,7 @@
                     jobInfo.NextFireTime = triggerInfo.NextFireTime;
                     jobInfo.Cron = triggerInfo.Cron;
                     jobInfo.Priority = triggerInfo.Priority;
-                    jobInfo.Status = triggerInfo.Status;
+                    jobInfo.Status = GetState(triggerInfo.Status);
                     jobInfo.JobClassName = triggerInfo.JobClassName;
 
                     jobInfoList.Add(jobInfo);
@@ -394,6 +412,39 @@
 
         #endregion
 
+        #region Request state
+
+        //同步两边数据
+        public void SyncJob()
+        {
+            Expression<Func<QRTZ_TRIGGERS, string>> OrderBy = x => x.SCHED_NAME;
+            Expression<Func<QRTZ_TRIGGERS, bool>> where = x => !string.IsNullOrEmpty(x.SCHED_NAME);
+            var jobQueryable = jobInfo_IRepository.Load(OrderBy, false, where, 1, 10);
+            var jobList = jobQueryable.Item1.ToList().Select(x => new
+            {
+                x.TRIGGER_STATE,
+                x.JOB_NAME,
+                x.JOB_GROUP,
+                x.TRIGGER_NAME,
+                x.TRIGGER_GROUP,
+                x.PREV_FIRE_TIME,
+                x.NEXT_FIRE_TIME
+            });
+
+            foreach (var job in jobList)
+            {
+               
+                Expression<Func<SURE_QRTZ_JOBINFO, int>> OrderByJob = x => x.Id;
+                Expression<Func<SURE_QRTZ_JOBINFO, bool>> whereJob = x => x.JobName == job.JOB_NAME && x.JobGroupName == job.JOB_GROUP
+                  && x.TriggerName == job.TRIGGER_NAME && x.TriggerGroupName == job.TRIGGER_GROUP;
+                var jobInfoNew = jobInfo_IRepository.Load(OrderByJob, false, whereJob, 1, 10).Item1.FirstOrDefault();
+                jobInfoNew.State = GetStateJob(job.TRIGGER_STATE);
+                jobInfo_IRepository.Update(jobInfoNew);
+            }
+        }
+
+        #endregion
+
         #region private
 
         /// <summary>
@@ -420,6 +471,74 @@
                     break;
                 case 2:
                     stateName = "完成";
+                    break;
+                default:
+                    break;
+            }
+            return stateName;
+        }
+
+        /// <summary>
+        /// 任务状态
+        /// </summary>
+        /// <param name="stateIndex">状态ID</param>
+        /// <returns>状态名</returns>
+        public string GetState(string state)
+        {
+            string stateName = "";
+            switch (state)
+            {
+                case "Normal":
+                    stateName = "正常";
+                    break;
+                case "Paused":
+                    stateName = "已暂停";
+                    break;
+                case "Complete":
+                    stateName = "完成";
+                    break;
+                case "Error":
+                    stateName = "错误";
+                    break;
+                case "Blocked":
+                    stateName = "阻塞";
+                    break;
+                case "None":
+                    stateName = "不存在";
+                    break;
+                default:
+                    break;
+            }
+            return stateName;
+        }
+
+        /// <summary>
+        /// 任务状态
+        /// </summary>
+        /// <param name="stateIndex">状态ID</param>
+        /// <returns>状态名</returns>
+        public int GetStateJob(string state)
+        {
+            int stateName = 0;
+            switch (state)
+            {
+                case "Normal":
+                    stateName = 0;
+                    break;
+                case "Paused":
+                    stateName = 1;
+                    break;
+                case "Complete":
+                    stateName = 2;
+                    break;
+                case "Error":
+                    stateName = 3;
+                    break;
+                case "Blocked":
+                    stateName = 4;
+                    break;
+                case "None":
+                    stateName = 1;
                     break;
                 default:
                     break;

@@ -13,13 +13,13 @@
     /// </summary>
     public enum JobState
     {
+        NOTRUNNIG = 6,  //待运行
+        NORMAL = 0,   //正常
+        PAUSED = 1,   //暂停
+        DELETE = 5, //删除
+        ERROR = 3,    //错误
         BLOCKED = 4,  //阻塞
         COMPLETE = 2, // 完成
-        ERROR = 3,    //错误
         NONE = -1,    //不存在
-        NORMAL = 0,   //正常
-        PAUSED = 1,    //暂停
-        NOTRUNNIG = 6,  //待运行
-        DELETE = 5 //删除
     }
 }
