@@ -25,7 +25,7 @@ namespace Sure.Quartz.NET.Web.Models
         /// <summary>
         /// 是否持久化
         /// </summary>
-        public bool IsDurable { get; set; }
+        //public bool IsDurable { get; set; }
 
         /// <summary>
         /// Trigger名称
@@ -55,7 +55,7 @@ namespace Sure.Quartz.NET.Web.Models
         /// <summary>
         /// 执行接口
         /// </summary>
-        public string JobClassName { get; set; }
+        //public string JobClassName { get; set; }
         
         /// <summary>
         /// 本次执行时间
@@ -70,17 +70,17 @@ namespace Sure.Quartz.NET.Web.Models
         /// <summary>
         /// Job描述
         /// </summary>
-        public string JobDescription { get; set; }
+        //public string JobDescription { get; set; }
 
         /// <summary>
         /// Trigger描述
         /// </summary>
-        public string TriggerDescription { get; set; }
+        //public string TriggerDescription { get; set; }
 
         /// <summary>
         /// 优先级
         /// </summary>
-        public int Priority { get; set; }
+        //public int Priority { get; set; }
     }
 
     public class JobInfoModelRespone {

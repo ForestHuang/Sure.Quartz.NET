@@ -219,6 +219,46 @@
             }
         }
 
+        //同步数据
+        public void SyncJob()
+        {
+            Expression<Func<QRTZ_TRIGGERS, string>> OrderBy = x => x.SCHED_NAME;
+            Expression<Func<QRTZ_TRIGGERS, bool>> where = x => !string.IsNullOrEmpty(x.SCHED_NAME);
+            Expression<Func<QRTZ_CRON_TRIGGERS, string>> OrderByCron = x => x.SCHED_NAME;
+            Expression<Func<QRTZ_CRON_TRIGGERS, bool>> whereCron = x => !string.IsNullOrEmpty(x.SCHED_NAME);
+            var jobQueryable = jobInfo_IRepository.Load(OrderBy, false, where, 1, 10);
+            var jobList = jobQueryable.Item1.ToList().Select(x => new
+            {
+                x.TRIGGER_STATE,
+                x.JOB_NAME,
+                x.JOB_GROUP,
+                x.TRIGGER_NAME,
+                x.TRIGGER_GROUP,
+                x.PREV_FIRE_TIME,
+                x.NEXT_FIRE_TIME
+            });
+
+            var jobQueryableCron = jobInfo_IRepository.Load(OrderByCron, false, whereCron, 1, 10);
+            var jobListCron = jobQueryableCron.Item1.ToList().Select(x => new
+            {
+                x.TRIGGER_NAME,
+                x.TRIGGER_GROUP,
+                x.CRON_EXPRESSION
+            });
+
+            foreach (var job in jobList)
+            {
+                Expression<Func<SURE_QRTZ_JOBINFO, int>> OrderByJob = x => x.Id;
+                Expression<Func<SURE_QRTZ_JOBINFO, bool>> whereJob = x => x.JobName == job.JOB_NAME && x.JobGroupName == job.JOB_GROUP
+                  && x.TriggerName == job.TRIGGER_NAME && x.TriggerGroupName == job.TRIGGER_GROUP;
+                var jobInfoNew = jobInfo_IRepository.Load(OrderByJob, false, whereJob, 1, 10).Item1.FirstOrDefault();
+                var jobCron = jobListCron.Where(x => x.TRIGGER_NAME == job.TRIGGER_NAME && x.TRIGGER_GROUP == job.TRIGGER_GROUP).Select(x => new { x.CRON_EXPRESSION }).FirstOrDefault();
+                jobInfoNew.State = GetStateJob(job.TRIGGER_STATE);
+                jobInfoNew.Cron = jobCron.CRON_EXPRESSION;
+                jobInfo_IRepository.Update(jobInfoNew);
+            }
+        }
+
         #endregion
 
         #region CURD Job
@@ -265,8 +305,8 @@
                     jobInfo.JobId = index++;
                     jobInfo.JobName = job.Name;
                     jobInfo.JobGroupName = job.Group;
-                    jobInfo.IsDurable = job.Durable;
-                    jobInfo.JobDescription = job.Description;
+                    //jobInfo.IsDurable = job.Durable;
+                    //jobInfo.JobDescription = job.Description;
 
                     var trigger = string.Join(",", scheduler.GetTriggersOfJob(new JobKey(job.Name, job.Group)).Select(m => m.Key.ToString()));
 
@@ -274,26 +314,26 @@
                     {
                         TriggerName = i.Name,
                         TriggerGroupName = i.Group,
-                        TriggerDescription = i.Description,
+                        //TriggerDescription = i.Description,
                         StartTime = i.StartTimeUtc.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                         PrevFireTime = i.GetPreviousFireTimeUtc()?.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                         NextFireTime = i.GetNextFireTimeUtc()?.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                         Cron = i.CronExpressionString,
-                        Priority = i.Priority,
+                        //Priority = i.Priority,
                         Status = scheduler.GetTriggerState(new TriggerKey(i.Name, i.Group)).ToString(),
-                        JobClassName = scheduler.GetJobDetail(i.JobKey).JobType.FullName
+                        //JobClassName = scheduler.GetJobDetail(i.JobKey).JobType.FullName
                     }).FirstOrDefault();
 
                     jobInfo.TriggerName = triggerInfo.TriggerName;
                     jobInfo.TriggerGroupName = triggerInfo.TriggerGroupName;
-                    jobInfo.TriggerDescription = triggerInfo.TriggerDescription;
+                    //jobInfo.TriggerDescription = triggerInfo.TriggerDescription;
                     jobInfo.StartTime = triggerInfo.StartTime;
                     jobInfo.PrevFireTime = triggerInfo.PrevFireTime;
                     jobInfo.NextFireTime = triggerInfo.NextFireTime;
                     jobInfo.Cron = triggerInfo.Cron;
-                    jobInfo.Priority = triggerInfo.Priority;
+                    //jobInfo.Priority = triggerInfo.Priority;
                     jobInfo.Status = GetState(triggerInfo.Status);
-                    jobInfo.JobClassName = triggerInfo.JobClassName;
+                    //jobInfo.JobClassName = triggerInfo.JobClassName;
 
                     jobInfoList.Add(jobInfo);
                 }
@@ -407,39 +447,6 @@
             catch (Exception ex)
             {
                 return Json(new AjaxResponseData { StausCode = "fail", Message = "修改失败", Data = null });
-            }
-        }
-
-        #endregion
-
-        #region Request state
-
-        //同步两边数据
-        public void SyncJob()
-        {
-            Expression<Func<QRTZ_TRIGGERS, string>> OrderBy = x => x.SCHED_NAME;
-            Expression<Func<QRTZ_TRIGGERS, bool>> where = x => !string.IsNullOrEmpty(x.SCHED_NAME);
-            var jobQueryable = jobInfo_IRepository.Load(OrderBy, false, where, 1, 10);
-            var jobList = jobQueryable.Item1.ToList().Select(x => new
-            {
-                x.TRIGGER_STATE,
-                x.JOB_NAME,
-                x.JOB_GROUP,
-                x.TRIGGER_NAME,
-                x.TRIGGER_GROUP,
-                x.PREV_FIRE_TIME,
-                x.NEXT_FIRE_TIME
-            });
-
-            foreach (var job in jobList)
-            {
-               
-                Expression<Func<SURE_QRTZ_JOBINFO, int>> OrderByJob = x => x.Id;
-                Expression<Func<SURE_QRTZ_JOBINFO, bool>> whereJob = x => x.JobName == job.JOB_NAME && x.JobGroupName == job.JOB_GROUP
-                  && x.TriggerName == job.TRIGGER_NAME && x.TriggerGroupName == job.TRIGGER_GROUP;
-                var jobInfoNew = jobInfo_IRepository.Load(OrderByJob, false, whereJob, 1, 10).Item1.FirstOrDefault();
-                jobInfoNew.State = GetStateJob(job.TRIGGER_STATE);
-                jobInfo_IRepository.Update(jobInfoNew);
             }
         }
 

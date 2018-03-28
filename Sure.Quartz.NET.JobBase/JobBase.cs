@@ -17,7 +17,6 @@ namespace Sure.Quartz.NET.JobBase
             JobKey jobKey = null;
             try
             {
-                jobKey = context.JobDetail.Key;
                 HttpClient hc = new HttpClient();
                 hc.GetAsync(context.JobDetail.JobDataMap["requestUrl"].ToString());
             }
