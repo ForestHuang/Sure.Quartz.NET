@@ -529,22 +529,22 @@
             int stateName = 0;
             switch (state)
             {
-                case "Normal":
+                case "NORMAL":
                     stateName = 0;
                     break;
-                case "Paused":
+                case "PAUSED":
                     stateName = 1;
                     break;
-                case "Complete":
+                case "COMPLETE":
                     stateName = 2;
                     break;
-                case "Error":
+                case "ERROR":
                     stateName = 3;
                     break;
-                case "Blocked":
+                case "BLOCKED":
                     stateName = 4;
                     break;
-                case "None":
+                case "NONE":
                     stateName = 1;
                     break;
                 default:
