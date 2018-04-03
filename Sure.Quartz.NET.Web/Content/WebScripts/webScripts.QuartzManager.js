@@ -12,17 +12,15 @@
         data: {
             jobs: [],
             jobModel: null,
-            QuartzJobModel: {
-                jobName: '',
-                jobGroupName: '',
-                fullJobName: '',
-                jobDescription: '',
-                triggerName: '',
-                triggerGroupName: '',
-                cron: '',
-                editcron: '',
-                triggerDescription: ''
-            }
+            jobName: '',
+            jobGroupName: '',
+            fullJobName: '',
+            jobDescription: '',
+            triggerName: '',
+            triggerGroupName: '',
+            cron: '',
+            editcron: '',
+            triggerDescription: ''
         }, mounted: function () {
             getJobInfoList.bind(this)(1, 10);
         }, methods: {
@@ -98,6 +96,10 @@
                         } else { $('#modal-form').modal('hide'); toastr.error("修改失败"); }
                         vm.$options.methods.Load();
                     });
+            }
+            , assignment: function (jobInfo) {
+                this.jobModel = jobInfo;
+                this.editcron = jobInfo.Cron;
             }
         }
     });

@@ -58,7 +58,7 @@
                         <th style="width:8%;">本次执行时间</th>
                         <th style="width:8%;">下次执行时间</th>
                         @*<th style="width:8%;">任务描述</th>
-                        <th style="width:8%;">触发器描述</th>*@
+                            <th style="width:8%;">触发器描述</th>*@
                         @*<th style="width:4.5%;">优先级</th>*@
                         <th>操作</th>
                     </tr>
@@ -67,7 +67,7 @@
                     <tr v-for="job in jobs" data-jobId="job.JobId">
                         <td v-for="(val, jobKey) in job" v-bind:name="jobKey">{{val}}</td>
                         <td>
-                            <button v-on:click="jobModel=job" data-toggle="modal" href="#modal-editform" style="margin: 5px;" class="btn btn-primary btn-xs" type="button"><i class="glyphicon glyphicon-edit"></i> 编辑</button>
+                            <button v-on:click="assignment(job)" data-toggle="modal" href="#modal-editform" style="margin: 5px;" class="btn btn-primary btn-xs" type="button"><i class="glyphicon glyphicon-edit"></i> 编辑</button>
                             <button v-if="job.Status==='正常'" v-on:click.stop="pauseJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button"><i class="glyphicon glyphicon-pause"></i> 暂停</button>
                             <button v-if="job.Status==='已暂停'" v-on:click.stop="resumeJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button"><i class="glyphicon glyphicon-play"></i> 恢复</button>
                             <button v-if="job.JobName!=='DataContrastJobName'" v-on:click.stop="deleteJob(job)" style="margin: 5px;" class="btn btn-primary btn-xs" type="button"><i class="glyphicon glyphicon-remove"></i> 删除</button>
@@ -87,38 +87,38 @@
                                 <div class="col-sm-6 b-r">
                                     <div class="form-group">
                                         <label>任务名称：</label>
-                                        <input type="text" name="jobName" v-model="QuartzJobModel.jobName" required="required" class="form-control">
+                                        <input type="text" name="jobName" v-model="jobName" required="required" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>任务组名称：</label>
-                                        <input type="text" name="jobGroupName" v-model="QuartzJobModel.jobGroupName" class="form-control">
+                                        <input type="text" name="jobGroupName" v-model="jobGroupName" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>执行类名：</label><br />
-                                        <input type="text" name="fullJobName" v-model="QuartzJobModel.fullJobName" class="form-control fullJobName">
+                                        <input type="text" name="fullJobName" v-model="fullJobName" class="form-control fullJobName">
                                     </div>
                                     <div class="form-group">
                                         <label>任务描述：</label>
-                                        <input type="text" name="jobDescription" v-model="QuartzJobModel.jobDescription" class="form-control">
+                                        <input type="text" name="jobDescription" v-model="jobDescription" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>触发器名称：</label>
-                                        <input type="text" name="triggerName" v-model="QuartzJobModel.triggerName" class="form-control">
+                                        <input type="text" name="triggerName" v-model="triggerName" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>触发器组名称：</label>
-                                        <input type="text" name="triggerGroupName" v-model="QuartzJobModel.triggerGroupName" class="form-control">
+                                        <input type="text" name="triggerGroupName" v-model="triggerGroupName" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>执行周期表达式：</label>
-                                        <input type="text" name="cron" v-model="QuartzJobModel.cron" placeholder="* * * * * ?" class="form-control">
+                                        <input type="text" name="cron" v-model="cron" placeholder="* * * * * ?" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>触发器描述</label>
-                                        <input type="text" name="triggerDescription" v-model="QuartzJobModel.triggerDescription" class="form-control">
+                                        <input type="text" name="triggerDescription" v-model="triggerDescription" class="form-control">
                                     </div>
 
                                 </div>
@@ -144,7 +144,7 @@
                                 <div class="col-sm-pull-5">
                                     <div class="form-group">
                                         <label>执行周期表达式：</label>
-                                        <input type="text" name="jobEditCron" v-model="QuartzJobModel.editcron" class="form-control">
+                                        <input type="text" name="jobEditCron" v-model="editcron" class="form-control">
                                     </div>
                                     <button v-on:click.stop="editJob(jobModel)" class="btn btn-sm btn-primary pull-right m-t-n-xs" type="button">
                                         <strong>提交</strong>
