@@ -2,6 +2,7 @@
 using Quartz.Impl;
 using Sure.Quartz.NET.EFBase;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.Composition;
@@ -12,12 +13,11 @@ namespace Sure.Quartz.NET.Common
     [Export("JobHelper", typeof(JobHelper))]
     public class JobHelper
     {
-        IScheduler scheduler = null;
+        static ConcurrentDictionary<string, IScheduler> ConnectionCache = new ConcurrentDictionary<string, IScheduler>();
+        static IScheduler scheduler = null;
         readonly object Locker = new object();
-        const string channelType = "tcp";
-        const string localIp = "localhost";
+        const string localIp = "127.0.0.1";
         const string port = "555";
-        const string bindName = "QuartzScheduler";
 
         /// <summary>
         /// 无参构造
@@ -28,11 +28,15 @@ namespace Sure.Quartz.NET.Common
             {
                 lock (Locker)
                 {
-                    var properties = new NameValueCollection();
-                    properties["quartz.scheduler.proxy"] = "true";
-                    properties["quartz.scheduler.proxy.Address"] = $"{channelType}://{localIp}:{port}/{bindName}";
-                    scheduler = (new StdSchedulerFactory(properties)).GetScheduler();
-                    scheduler.Start();
+                    if (!ConnectionCache.ContainsKey(localIp))
+                    {
+                        var properties = new NameValueCollection();
+                        properties["quartz.scheduler.proxy"] = "true";
+                        properties["quartz.scheduler.proxy.Address"] = $"tcp://{localIp}:{port}/QuartzScheduler";
+                        scheduler = (new StdSchedulerFactory(properties)).GetScheduler();
+                        ConnectionCache[localIp] = scheduler;
+                    }
+                    scheduler = ConnectionCache[localIp];
                 }
             }
         }

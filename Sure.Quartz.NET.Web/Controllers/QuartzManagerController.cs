@@ -24,7 +24,7 @@
         IScheduler scheduler = null;
         readonly object Locker = new object();
         const string channelType = "tcp";
-        const string localIp = "localhost";
+        const string localIp = "127.0.0.1";
         const string port = "555";
         const string bindName = "QuartzScheduler";
 
