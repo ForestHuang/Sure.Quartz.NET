@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Sure.Quartz.CronForms
 {
-    public class Form1 : Form
+    public class Cron : Form
     {
         private Dictionary<string, int> dicWeek = new Dictionary<string, int>();
         private IContainer components = (IContainer)null;
@@ -136,7 +136,7 @@ namespace Sure.Quartz.CronForms
         private RadioButton rbSecAppoint;
         private RadioButton rbSec;
 
-        public Form1()
+        public Cron()
         {
             try
             {
@@ -552,7 +552,7 @@ namespace Sure.Quartz.CronForms
 
         private void InitializeComponent()
         {
-            ComponentResourceManager componentResourceManager = new ComponentResourceManager(typeof(Form1));
+            ComponentResourceManager componentResourceManager = new ComponentResourceManager(typeof(Cron));
             this.tabTime = new TabControl();
             this.tabSecond = new TabPage();
             this.numSecCO = new NumericUpDown();
